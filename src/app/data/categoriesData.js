@@ -10,6 +10,75 @@ import CatImg8 from '../../assets/img/electronics/product/8.jpg'
 import CatImg9 from '../../assets/img/electronics/product/9.jpg'
 import CatImg10 from '../../assets/img/electronics/product/10.jpg'
 
+// Ana kategoriler - JSON verilerine göre güncellenmiş
+const getMainCategoriesData = () => {
+    return [
+        {
+            id: 1,
+            name: "Bilgisayar & Aksesuarlar",
+            slug: "bilgisayar-aksesuarlari",
+            img: CatImg1,
+            itemCount: 82
+        },
+        {
+            id: 2,
+            name: "Kamera & Fotoğraf",
+            slug: "kamera-fotograf",
+            img: CatImg2,
+            itemCount: 24
+        },
+        {
+            id: 3,
+            name: "Araç Elektronik",
+            slug: "arac-elektronik",
+            img: CatImg3,
+            itemCount: 1
+        },
+        {
+            id: 4,
+            name: "Telefon & Aksesuarlar",
+            slug: "telefon-aksesuarlari",
+            img: CatImg4,
+            itemCount: 0
+        },
+        {
+            id: 5,
+            name: "Ses & Müzik",
+            slug: "ses-ve-muzik",
+            img: CatImg5,
+            itemCount: 7
+        },
+        {
+            id: 6,
+            name: "Oyun & Eğlence",
+            slug: "oyun-ve-eğlence",
+            img: CatImg6,
+            itemCount: 0
+        },
+        {
+            id: 7,
+            name: "Spor & Açık Hava",
+            slug: "spor-acik-hava",
+            img: CatImg7,
+            itemCount: 2
+        },
+        {
+            id: 8,
+            name: "Genel Elektronik",
+            slug: "elektronik",
+            img: CatImg8,
+            itemCount: 8
+        },
+        {
+            id: 9,
+            name: "Diğer Ürünler",
+            slug: "genel",
+            img: CatImg9,
+            itemCount: 29
+        }
+    ];
+}
+
 export const CategoriesData = [
     {
         id: 1,
@@ -338,13 +407,7 @@ export const findCategoryBySlug = (slug) => {
 
 // Ana kategorileri getir
 export const getMainCategories = () => {
-    return CategoriesData.map(category => ({
-        id: category.id,
-        name: category.name,
-        slug: category.slug,
-        img: category.img,
-        itemCount: category.itemCount
-    }))
+    return getMainCategoriesData()
 }
 
 // Kategori breadcrumb oluştur

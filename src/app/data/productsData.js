@@ -1,28 +1,30 @@
-// CSV'den çıkarılan ilk 5 ürün verisi
+// Tüm ürün verilerini JSON'dan yükle
+import allProductsData from './allProducts.json'
 
-// Ürün adından benzersiz 6 haneli kod oluştur
+// Ürün adından benzersiz 6 haneli kod oluştur (backup için)
 const generateProductCode = (productName) => {
-    // Ürün adını temizle ve hash oluştur
     const cleanName = productName.toLowerCase()
-        .replace(/[^a-z0-9\s]/g, '') // Özel karakterleri kaldır
-        .replace(/\s+/g, '') // Boşlukları kaldır
+        .replace(/[^a-z0-9\s]/g, '')
+        .replace(/\s+/g, '');
     
-    // Basit hash fonksiyonu
-    let hash = 0
+    let hash = 0;
     for (let i = 0; i < cleanName.length; i++) {
-        const char = cleanName.charCodeAt(i)
-        hash = ((hash << 5) - hash) + char
-        hash = hash & hash // 32bit integer'a çevir
+        const char = cleanName.charCodeAt(i);
+        hash = ((hash << 5) - hash) + char;
+        hash = hash & hash;
     }
     
-    // Hash'i pozitif yap ve 6 haneli yap
-    const positiveHash = Math.abs(hash)
-    const code = (positiveHash % 900000) + 100000 // 100000-999999 arası
-    
-    return code.toString()
+    const positiveHash = Math.abs(hash);
+    const code = (positiveHash % 900000) + 100000;
+    return code.toString();
 }
 
 export const getProductsData = () => {
+    return allProductsData
+}
+
+// Eski 5 ürünlü versiyon (backup için)
+export const getFirstFiveProducts = () => {
     return [
     {
         id: 1,
