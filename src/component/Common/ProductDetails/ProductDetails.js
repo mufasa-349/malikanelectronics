@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import ProductInfo from './ProductInfo'
 import RelatedProduct from './RelatedProduct'
 import { Link } from 'react-router-dom'
@@ -25,6 +25,15 @@ const ProductDetailsOne = () => {
         }
         setLoading(false);
     }, [id, dispatch]);
+    
+    // Product yüklendiğinde ana görseli ata
+    useEffect(() => {
+        if (product?.images?.length) {
+            setImg(product.images[0]);
+        } else {
+            setImg(null);
+        }
+    }, [product]);
 
     // Add to cart
     const addToCart = async (id) => {
@@ -45,7 +54,53 @@ const ProductDetailsOne = () => {
 
     const [count, setCount] = useState(1)
 
-    const [img, setImg] = useState(product?.images?.[0] || '')
+    const [img, setImg] = useState(null)
+    const [hoveredImage, setHoveredImage] = useState(null)
+    const [isHovering, setIsHovering] = useState(false)
+    
+    // Placeholder görsel
+    const PLACEHOLDER = "https://via.placeholder.com/800x600?text=G%C3%B6rsel+Bulunamad%C4%B1"
+    
+    // Hover timeout için ref
+    const hoverTimeoutRef = useRef(null)
+    
+    // Gelişmiş hover fonksiyonları
+    const handleThumbnailHover = (image) => {
+        // Önceki timeout'u temizle
+        if (hoverTimeoutRef.current) {
+            clearTimeout(hoverTimeoutRef.current)
+        }
+        
+        setIsHovering(true)
+        setHoveredImage(image)
+    }
+    
+    const handleThumbnailLeave = () => {
+        // Kısa bir delay ile hover'ı temizle (flicker'ı önlemek için)
+        hoverTimeoutRef.current = setTimeout(() => {
+            setIsHovering(false)
+            setHoveredImage(null)
+        }, 100)
+    }
+    
+    const handleThumbnailClick = (image) => {
+        // Tıklama durumunda hover'ı hemen temizle
+        if (hoverTimeoutRef.current) {
+            clearTimeout(hoverTimeoutRef.current)
+        }
+        setIsHovering(false)
+        setHoveredImage(null)
+        setImg(image)
+    }
+    
+    // Component unmount'ta timeout'u temizle
+    useEffect(() => {
+        return () => {
+            if (hoverTimeoutRef.current) {
+                clearTimeout(hoverTimeoutRef.current)
+            }
+        }
+    }, [])
 
     const incNum = () => {
         setCount(count + 1)
@@ -95,7 +150,21 @@ const ProductDetailsOne = () => {
                         <div className="col-lg-4">
                             <div className="product-image-container">
                                 <div className="main-product-image">
-                                    <img src={img} alt={product.title} className="main-image" />
+                                    <img 
+                                        src={isHovering && hoveredImage ? hoveredImage : (img || PLACEHOLDER)} 
+                                        alt={product?.title || 'Ürün'} 
+                                        className="main-image"
+                                        onError={(e) => {
+                                            e.currentTarget.src = PLACEHOLDER;
+                                        }}
+                                    />
+                                    {/* Hover indicator */}
+                                    {isHovering && (
+                                        <div className="hover-indicator">
+                                            <i className="fa fa-eye"></i>
+                                            <span>Önizleme</span>
+                                        </div>
+                                    )}
                                 </div>
                                 
                                 {/* Thumbnail Galerisi */}
@@ -105,14 +174,23 @@ const ProductDetailsOne = () => {
                                         {product.images.map((image, index) => (
                                             <div 
                                                 key={index} 
-                                                className={`thumbnail-item ${img === image ? 'active' : ''}`}
-                                                onClick={() => setImg(image)}
+                                                className={`thumbnail-item ${img === image ? 'active' : ''} ${isHovering && hoveredImage === image ? 'hovering' : ''}`}
+                                                onClick={() => handleThumbnailClick(image)}
+                                                onMouseEnter={() => handleThumbnailHover(image)}
+                                                onMouseLeave={handleThumbnailLeave}
                                             >
                                                 <img 
                                                     src={image} 
-                                                    alt={`${product.title} ${index + 1}`}
+                                                    alt={`${product?.title || 'Ürün'} ${index + 1}`}
                                                     className="thumbnail-image"
+                                                    onError={(e) => {
+                                                        e.currentTarget.src = PLACEHOLDER;
+                                                    }}
                                                 />
+                                                {/* Hover overlay */}
+                                                <div className="thumbnail-hover-overlay">
+                                                    <i className="fa fa-search-plus"></i>
+                                                </div>
                                             </div>
                                         ))}
                                     </div>
@@ -126,6 +204,9 @@ const ProductDetailsOne = () => {
                                     <div className="brand-info mb-2">
                                         <small className="text-muted">Marka: {product.brand}</small>
                                     </div>
+                                    <div className="product-code-info mb-2">
+                                        <small className="text-muted">Ürün Kodu: <strong>{product.productCode}</strong></small>
+                                    </div>
                                 <div className="reviews_rating">
                                     <RatingStar maxScore={5} rating={product.rating} id="rating-star-common" />
                                     <span>({product.reviewCount} Müşteri Yorumu)</span>
@@ -138,7 +219,7 @@ const ProductDetailsOne = () => {
                                 {/* WhatsApp ve Telefon İletişim Butonları - Fiyatın hemen altında */}
                                 <div className="contact-buttons-price">
                                     <a 
-                                        href={`https://wa.me/905551234567?text=Merhaba, ${product.title} ürünü hakkında bilgi almak istiyorum. Fiyat: ₺${product.price.toLocaleString()}`} 
+                                        href={`https://wa.me/905393973949?text=Merhaba, ${product.title} ürünü hakkında bilgi almak istiyorum. Fiyat: ₺${product.price.toLocaleString()}`} 
                                         target="_blank" 
                                         rel="noopener noreferrer"
                                         className="whatsapp-btn-price"
@@ -147,7 +228,7 @@ const ProductDetailsOne = () => {
                                         WhatsApp ile İletişim
                                     </a>
                                     <a 
-                                        href="tel:+905551234567" 
+                                        href="tel:+905393973949" 
                                         className="phone-btn-price"
                                     >
                                         <i className="fa fa-phone"></i>
@@ -205,7 +286,7 @@ const ProductDetailsOne = () => {
                                         {/* WhatsApp ve Telefon İletişim Butonları */}
                                         <div className="contact-buttons">
                                             <a 
-                                                href={`https://wa.me/905551234567?text=Merhaba, ${product.title} ürünü hakkında bilgi almak istiyorum.`} 
+                                                href={`https://wa.me/905393973949?text=Merhaba, ${product.title} ürünü hakkında bilgi almak istiyorum.`} 
                                                 target="_blank" 
                                                 rel="noopener noreferrer"
                                                 className="whatsapp-btn"
@@ -214,7 +295,7 @@ const ProductDetailsOne = () => {
                                                 WhatsApp ile İletişim
                                             </a>
                                             <a 
-                                                href="tel:+905551234567" 
+                                                href="tel:+905393973949" 
                                                 className="phone-btn"
                                             >
                                                 <i className="fa fa-phone"></i>

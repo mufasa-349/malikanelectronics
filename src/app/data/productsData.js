@@ -1,11 +1,35 @@
 // CSV'den çıkarılan ilk 5 ürün verisi
+
+// Ürün adından benzersiz 6 haneli kod oluştur
+const generateProductCode = (productName) => {
+    // Ürün adını temizle ve hash oluştur
+    const cleanName = productName.toLowerCase()
+        .replace(/[^a-z0-9\s]/g, '') // Özel karakterleri kaldır
+        .replace(/\s+/g, '') // Boşlukları kaldır
+    
+    // Basit hash fonksiyonu
+    let hash = 0
+    for (let i = 0; i < cleanName.length; i++) {
+        const char = cleanName.charCodeAt(i)
+        hash = ((hash << 5) - hash) + char
+        hash = hash & hash // 32bit integer'a çevir
+    }
+    
+    // Hash'i pozitif yap ve 6 haneli yap
+    const positiveHash = Math.abs(hash)
+    const code = (positiveHash % 900000) + 100000 // 100000-999999 arası
+    
+    return code.toString()
+}
+
 export const getProductsData = () => {
     return [
-        {
-            id: 1,
+    {
+        id: 1,
             title: "USB 3.0 Hub, 4 bağlantı noktası USB hub ayırıcı, taşınabilir USB adaptör mini multiport genişletme masaüstü, dizüstü bilgisayar, xbox, flash sürücü, hdd, konsol, yazıcı, pc, klavyeler, hp, dell",
             titleEn: "USB 3.0 Hub, 4 Port USB Hub Splitter,Portable USB Adapter Mini Multiport Expander for Desktop, Laptop, Xbox, Flash Drive, HDD, Console, Printer, PC, Keyboards, HP, Dell",
             asin: "B0BWH9DZRV",
+            productCode: generateProductCode("USB 3.0 Hub, 4 bağlantı noktası USB hub ayırıcı, taşınabilir USB adaptör mini multiport genişletme masaüstü, dizüstü bilgisayar, xbox, flash sürücü, hdd, konsol, yazıcı, pc, klavyeler, hp, dell"),
             category: "bilgisayar-aksesuarlari",
             categoryPath: "Elektronik -> Bilgisayarlar ve Aksesuarlar -> Bilgisayar Aksesuarları ve Çevreselleri -> USB Hub'ları",
             images: [
@@ -38,12 +62,13 @@ export const getProductsData = () => {
                 "Uyumluluk": "Windows, Mac, Linux",
                 "Boyutlar": "Kompakt"
             }
-        },
-        {
-            id: 2,
+    },
+    {
+        id: 2,
             title: "Makita için 350W Güç İnverter 18V LXT LI-ION Pil, 2-Portlu Tedarik İnvertör Jeneratörleri Dönüştürücü DC 20V ila AC 110V ~ 120V LED Işık, 3 USB-A, 1 Tip-C, 1DC Port, Açık Seyahat Kampı için",
             titleEn: "350W Power Inverter for Makita 18V LXT Li-ion Battery,2-Port Supply Inverter Generators Converter DC 20V to AC 110V ~120V with LED Light,3 USB-A,1 Type-C,1DC Port, for Outdoor Travel Camping",
             asin: "B0D4PGCXNL",
+            productCode: generateProductCode("Makita için 350W Güç İnverter 18V LXT LI-ION Pil, 2-Portlu Tedarik İnvertör Jeneratörleri Dönüştürücü DC 20V ila AC 110V ~ 120V LED Işık, 3 USB-A, 1 Tip-C, 1DC Port, Açık Seyahat Kampı için"),
             category: "arac-elektronik-aksesuarlari",
             categoryPath: "Elektronik -> Araç ve Araç Elektronik -> Araç Elektronik Aksesuarları -> Ses ve Video Aksesuarları",
             images: [
@@ -77,12 +102,13 @@ export const getProductsData = () => {
                 "USB Portları": "3x USB-A + 1x Type-C",
                 "LED Işık": "300 Lümen"
             }
-        },
-        {
-            id: 3,
+    },
+    {
+        id: 3,
             title: "Fujifilm Instax Mini 12 Anında Kamera Paketi - 20 Çekim Film, Özel Case, Deluxe 60 Cep Fotoğraf Albümü ve Bluebirdsales Aksesuarları - Otomatik Pozlama, Selfie Mirror, Pastel Blue içerir",
             titleEn: "Fujifilm Instax Mini 12 Instant Camera Bundle - Includes 20 Shots Film, Custom Case, Deluxe 60-Pocket Photo Album & BluebirdSales Accessories - Auto Exposure, Selfie Mirror, Pastel Blue",
             asin: "B0D6C6GG9X",
+            productCode: generateProductCode("Fujifilm Instax Mini 12 Anında Kamera Paketi - 20 Çekim Film, Özel Case, Deluxe 60 Cep Fotoğraf Albümü ve Bluebirdsales Aksesuarları - Otomatik Pozlama, Selfie Mirror, Pastel Blue içerir"),
             category: "film-fotografciligi",
             categoryPath: "Elektronik -> Kamera ve Fotoğraf -> Film Fotoğrafçılığı -> Film Kameraları",
             images: [
@@ -116,12 +142,13 @@ export const getProductsData = () => {
                 "Özellikler": "Otomatik Pozlama, Selfie Mirror",
                 "Aksesuarlar": "Case, Albüm, Çerçeveler"
             }
-        },
-        {
-            id: 4,
+    },
+    {
+        id: 4,
             title: "4K video kamera, 2'den 1 dijital monoküler teleskop kamera, manuel odak 48MP fotoğraf maks.",
             titleEn: "4K Video Camcorder, 2 in 1 Digital Monocular Telescope Camera, Manual Focus 48MP Photo Max 4000ft 104X Digital Telescope Video Camera with 3.0\" Screen/Hood/Battery/SD Card/Case",
             asin: "B0FG7CNCMD",
+            productCode: generateProductCode("4K video kamera, 2'den 1 dijital monoküler teleskop kamera, manuel odak 48MP fotoğraf maks."),
             category: "video-kameralar",
             categoryPath: "Elektronik -> Kamera ve Fotoğraf -> Video -> kameralar",
             images: [
@@ -154,12 +181,13 @@ export const getProductsData = () => {
                 "Ekran": "3\" LCD",
                 "Pil": "4000mAh"
             }
-        },
-        {
-            id: 5,
+    },
+    {
+        id: 5,
             title: "Lensy ekran ücretsiz dijital kamera | Dört yerleşik filtre | Şarj edilebilir, 8MP, hafif, odaksuz, otomatik flaş, kullanımı kolay, yeniden kullanılabilir, retro film tarzı fotoğraflar (Forest Green)",
             titleEn: "LENSY Screen Free Digital Camera | Four Built in Filters | Rechargeable, 8mp, Lightweight, Focus-Free, Auto-Flash, Easy-to-Use, Reusable, Retro Film-Style Photos (Forest Green)",
             asin: "B0FDJVBCMF",
+            productCode: generateProductCode("Lensy ekran ücretsiz dijital kamera | Dört yerleşik filtre | Şarj edilebilir, 8MP, hafif, odaksuz, otomatik flaş, kullanımı kolay, yeniden kullanılabilir, retro film tarzı fotoğraflar (Forest Green)"),
             category: "dijital-kameralar",
             categoryPath: "Electronics -> Kamera ve Fotoğraf -> Dijital Kameralar -> Dijital Kameraları Nokta ve Çekin",
             images: [
