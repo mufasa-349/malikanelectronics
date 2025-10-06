@@ -5,6 +5,15 @@ import { Link } from 'react-router-dom';
 import banner from '../../../assets/img/common/nav_banner.png'
 
 const NaveItems = (props) => {
+    // Eğer children yoksa basit link olarak göster
+    if (!props.item.children) {
+        return (
+            <li>
+                <Link to={props.item.href || "#!"}>{props.item.name}</Link>
+            </li>
+        )
+    }
+
     return (
         <>
             {props.item.mega_menu ? (
@@ -16,13 +25,11 @@ const NaveItems = (props) => {
                                 <li className="mega-menu-item" key={index}>
                                     <p className="mega-menu-item-title">{item.name}</p>
                                     <ul className="mega-menu-sub">
-                                        {item.children.map((datas, index) => (
+                                        {item.children && item.children.map((datas, index) => (
                                             <li key={index}><Link to={datas.href}>{datas.name}</Link></li>
                                         ))}
-
                                     </ul>
                                 </li>
-
                             ))}
                             <li className="mega-menu-item">
                                 <div className="menu-banner">
@@ -45,9 +52,7 @@ const NaveItems = (props) => {
                         ))}
                     </ul>
                 </li>
-
             )}
-
         </>
     )
 }

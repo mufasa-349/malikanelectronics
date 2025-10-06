@@ -1,6 +1,6 @@
 import {createSlice} from "@reduxjs/toolkit";
 // Demo Data
-import { ProductData } from '../data/productsData'
+import { getProductsData } from '../data/productsData'
 // Alert
 import Swal from "sweetalert2";
 
@@ -8,10 +8,10 @@ import Swal from "sweetalert2";
 const productsSlice = createSlice({
     name: 'products',
     initialState: {
-        products:ProductData,
-        carts: ProductData.slice(4,7),
-        favorites: ProductData.slice(8,12),
-        compare: ProductData.slice(0,2),
+        products: getProductsData(),
+        carts: getProductsData().slice(0,2),
+        favorites: getProductsData().slice(2,4),
+        compare: getProductsData().slice(0,2),
         single:null,
     },
     reducers: {

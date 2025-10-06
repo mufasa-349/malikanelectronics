@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import ProductInfo from './ProductInfo'
 import RelatedProduct from './RelatedProduct'
 import { Link } from 'react-router-dom'
@@ -6,13 +6,25 @@ import { useSelector, useDispatch } from "react-redux";
 import { useParams } from 'react-router-dom';
 import { RatingStar } from "rating-star";
 import Swal from 'sweetalert2';
+import { getProductById } from '../../../app/data/productsData';
 
 const ProductDetailsOne = () => {
     let dispatch = useDispatch();
-
     let { id } = useParams();
-    dispatch({ type: "products/getProductById", payload: { id } });
-    let product = useSelector((state) => state.products.single);
+    
+    // Gerçek ürün verilerini al
+    const [product, setProduct] = useState(null);
+    const [loading, setLoading] = useState(true);
+    
+    useEffect(() => {
+        const productData = getProductById(id);
+        if (productData) {
+            setProduct(productData);
+            // Redux store'u da güncelle
+            dispatch({ type: "products/getProductById", payload: { id } });
+        }
+        setLoading(false);
+    }, [id, dispatch]);
 
     // Add to cart
     const addToCart = async (id) => {
@@ -36,7 +48,7 @@ const ProductDetailsOne = () => {
 
     const [count, setCount] = useState(1)
 
-    const [img, setImg] = useState(product.img)
+    const [img, setImg] = useState(product?.images?.[0] || '')
 
     const incNum = () => {
         setCount(count + 1)
@@ -49,26 +61,73 @@ const ProductDetailsOne = () => {
             setCount(1)
         }
     }
+    if (loading) {
+        return (
+            <section id="product_single_one" className="ptb-100">
+                <div className="container">
+                    <div className="text-center py-5">
+                        <div className="spinner-border text-primary" role="status">
+                            <span className="sr-only">Yükleniyor...</span>
+                        </div>
+                        <p className="mt-3">Ürün yükleniyor...</p>
+                    </div>
+                </div>
+            </section>
+        )
+    }
+
+    if (!product) {
+        return (
+            <section id="product_single_one" className="ptb-100">
+                <div className="container">
+                    <div className="text-center py-5">
+                        <h3>Ürün bulunamadı</h3>
+                        <p>Bu ürün mevcut değil veya kaldırılmış olabilir.</p>
+                        <Link to="/shop" className="btn btn-primary">Alışverişe Dön</Link>
+                    </div>
+                </div>
+            </section>
+        )
+    }
+
     return (
-        <>{product
-            ?
+        <>
             <section id="product_single_one" className="ptb-100">
                 <div className="container">
                     <div className="row area_boxed">
                         <div className="col-lg-4">
                             <div className="product_single_one_img">
-                                <img src={img} alt="img" />
+                                <img src={img} alt={product.title} />
+                            </div>
+                            {/* Ürün Galerisi */}
+                            <div className="product-gallery mt-3">
+                                <div className="row">
+                                    {product.images.slice(0, 4).map((image, index) => (
+                                        <div key={index} className="col-3">
+                                            <img 
+                                                src={image} 
+                                                alt={`${product.title} ${index + 1}`}
+                                                className={`img-thumbnail cursor-pointer ${img === image ? 'border-primary' : ''}`}
+                                                onClick={() => setImg(image)}
+                                                style={{ cursor: 'pointer' }}
+                                            />
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
                         </div>
                         <div className="col-lg-8">
                             <div className="product_details_right_one">
                                 <div className="modal_product_content_one">
                                     <h3>{product.title}</h3>
-                                    <div className="reviews_rating">
-                                        <RatingStar maxScore={5} rating={product.rating.rate} id="rating-star-common" />
-                                        <span>({product.rating.count} Customer Reviews)</span>
+                                    <div className="brand-info mb-2">
+                                        <small className="text-muted">Marka: {product.brand}</small>
                                     </div>
-                                    <h4>${product.price}.00 <del>${parseInt(product.price) + 17}.00</del> </h4>
+                                    <div className="reviews_rating">
+                                        <RatingStar maxScore={5} rating={product.rating} id="rating-star-common" />
+                                        <span>({product.reviewCount} Müşteri Yorumu)</span>
+                                    </div>
+                                    <h4>₺{product.price.toLocaleString()} <del>${product.originalPrice}</del> </h4>
                                     <p>{product.description}</p>
                                     <div className="customs_selects">
                                         <select name="product" className="customs_sel_box">
@@ -120,14 +179,33 @@ const ProductDetailsOne = () => {
                                         <ul>
                                             <li>
                                                 <a href="#!" className="action wishlist" title="Wishlist" onClick={() => addToFav(product.id)}><i
-                                                    className="fa fa-heart"></i>Add To Wishlist</a>
+                                                    className="fa fa-heart"></i>Favorilere Ekle</a>
                                             </li>
                                             <li>
                                                 <a href="#!" className="action compare" onClick={() => addToComp(product.id)} title="Compare"><i
-                                                    className="fa fa-exchange"></i>Add To Compare</a>
+                                                    className="fa fa-exchange"></i>Karşılaştır</a>
                                             </li>
                                         </ul>
-                                        <a href="#!" className="theme-btn-one btn-black-overlay btn_sm" onClick={() => addToCart(product.id)}>Add To Cart</a>
+                                        
+                                        {/* WhatsApp ve Telefon İletişim Butonları */}
+                                        <div className="contact-buttons">
+                                            <a 
+                                                href={`https://wa.me/905551234567?text=Merhaba, ${product.title} ürünü hakkında bilgi almak istiyorum.`} 
+                                                target="_blank" 
+                                                rel="noopener noreferrer"
+                                                className="whatsapp-btn"
+                                            >
+                                                <i className="fab fa-whatsapp"></i>
+                                                WhatsApp ile İletişim
+                                            </a>
+                                            <a 
+                                                href="tel:+905551234567" 
+                                                className="phone-btn"
+                                            >
+                                                <i className="fa fa-phone"></i>
+                                                Telefon Et
+                                            </a>
+                                        </div>
                                     </div>
 
                                 </div>
@@ -137,21 +215,6 @@ const ProductDetailsOne = () => {
                     <ProductInfo />
                 </div>
             </section>
-            :
-            <div className="container ptb-100">
-                <div className="row">
-                    <div className="col-lg-6 offset-lg-3 col-md-6 offset-md-3 col-sm-12 col-12">
-                        <div className="empaty_cart_area">
-                            <img src={img} alt="img" />
-                            <h2>PRODUCT NOT FOUND</h2>
-                            <h3>Sorry Mate... No Item Found according to Your query!</h3>
-                            <Link to="/shop" className="btn btn-black-overlay btn_sm">Continue Shopping</Link>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        }
-
             <RelatedProduct />
         </>
     )

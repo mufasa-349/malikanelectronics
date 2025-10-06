@@ -152,14 +152,33 @@ const ProductDetailsTwo = () => {
                                         <ul>
                                             <li>
                                                 <a href="#!" className="action wishlist" title="Wishlist" onClick={() => addToFav(product.id)}><i
-                                                    className="fa fa-heart"></i>Add To Wishlist</a>
+                                                    className="fa fa-heart"></i>Favorilere Ekle</a>
                                             </li>
                                             <li>
                                                 <a href="#!" className="action compare" title="Compare" onClick={() => addToComp(product.id)}><i
-                                                    className="fa fa-exchange"></i>Add To Compare</a>
+                                                    className="fa fa-exchange"></i>Karşılaştır</a>
                                             </li>
                                         </ul>
-                                        <a href="#!" className="theme-btn-one btn-black-overlay btn_sm" onClick={() => addToCart(product.id)}>Add To Cart</a>
+                                        
+                                        {/* WhatsApp ve Telefon İletişim Butonları */}
+                                        <div className="contact-buttons">
+                                            <a 
+                                                href={`https://wa.me/905551234567?text=Merhaba, ${product.title} ürünü hakkında bilgi almak istiyorum.`} 
+                                                target="_blank" 
+                                                rel="noopener noreferrer"
+                                                className="whatsapp-btn"
+                                            >
+                                                <i className="fab fa-whatsapp"></i>
+                                                WhatsApp ile İletişim
+                                            </a>
+                                            <a 
+                                                href="tel:+905551234567" 
+                                                className="phone-btn"
+                                            >
+                                                <i className="fa fa-phone"></i>
+                                                Telefon Et
+                                            </a>
+                                        </div>
                                     </div>
 
                                 </div>

@@ -1,31 +1,26 @@
 import React from 'react'
-import Banner from '../component/Fashion/Banner'
-import BannerBottom from '../component/Fashion/BannerBottom'
-import HotProduct from '../component/Fashion/HotProduct'
-import Trending from '../component/Fashion/Trending'
-import TodayDeal from '../component/Fashion/TodayDeal'
-import OfferTime from '../component/Fashion/OfferTime'
-import Blog from '../component/Fashion/Blog'
-import InstgramSlider from '../component/Common/Instagram'
+import Banner from '../component/BabyToys/Banner'
+import Category from '../component/BabyToys/Category'
+import TrendingProducts from '../component/BabyToys/TrendingProducts'
+import TopProducts from '../component/BabyToys/TopProducts'
+import BannerBottom from '../component/BabyToys/BannerBottom'
+import Instagram from '../component/BabyToys/instagram'
 import Footer from '../component/Common/Footer'
 import Header from '../component/Common/Header'
 
-
-const Fashion = () => {
+const Home = () => {
     return (
         <>
             <Header />
             <Banner />
+            <Category />
+            <TrendingProducts />
+            <TopProducts />
             <BannerBottom />
-            <HotProduct />
-            <OfferTime />
-            <TodayDeal />
-            <Trending />
-            <Blog />
-            <InstgramSlider />
+            <Instagram />
             <Footer />
         </>
     )
 }
 
-export default Fashion
+export default Home

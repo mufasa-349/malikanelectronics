@@ -1,233 +1,151 @@
 export const MenuData = [
     {
-        name: "Home",
-        href: "#!",
-        children: [
-            {
-                name: "Fashion",
-                href: "/"
-            },
-            {
-                name: "Furniture",
-                href: "/furniture"
-            },
-            {
-                name: "Electronics",
-                href: "/electronics"
-            },
-            {
-                name: "Grocery",
-                href: "/grocery"
-            },
-            {
-                name: "Pharmacy",
-                href: "/pharmacy"
-            },
-            {
-                name: "Jewllary",
-                href: "/jewllary"
-            },
-            {
-                name: "Baby Toys",
-                href: "/baby-toys"
-            },
-
-        ]
+        name: "Ana Sayfa",
+        href: "/"
     },
     {
-        name: "Shop",
+        name: "Kategoriler",
         href: "#!",
         mega_menu: true,
         children: [
             {
-                name: "Shop Layouts",
+                name: "Bilgisayar & Aksesuarlar",
                 children: [
                     {
-                        name: "Shop Four Grid",
-                        href: "/shop"
+                        name: "Bilgisayar Bileşenleri",
+                        href: "/shop?category=bilgisayar-bilesenleri"
                     },
                     {
-                        name: "Shop Three Grid",
-                        href: "/shopTwo"
+                        name: "Bilgisayar Aksesuarları",
+                        href: "/shop?category=bilgisayar-aksesuarlari"
                     },
                     {
-                        name: "Shop List View",
-                        href: "/shoplist"
+                        name: "Veri Depolama",
+                        href: "/shop?category=veri-depolama"
                     },
                     {
-                        name: "Shop Left Sidebar",
-                        href: "/shop-left-bar"
+                        name: "Dizüstü Bilgisayar Aksesuarları",
+                        href: "/shop?category=dizustu-aksesuarlari"
                     },
                     {
-                        name: "Shop Right Sidebar",
-                        href: "/shop-right-bar"
+                        name: "Ağ Ürünleri",
+                        href: "/shop?category=ag-urunleri"
                     },
                     {
-                        name: "Product Single",
-                        href: "/product-details-one/1"
-                    },
-                    {
-                        name: "Product Single Two",
-                        href: "/product-details-two/1"
+                        name: "Tabletler",
+                        href: "/shop?category=tabletler"
                     }
                 ]
             },
             {
-                name: "Other Pages",
+                name: "Kamera & Fotoğraf",
                 children: [
                     {
-                        name: "Cart View One",
-                        href: "/cart"
+                        name: "Dijital Kameralar",
+                        href: "/shop?category=dijital-kameralar"
                     },
                     {
-                        name: "Cart View Two",
-                        href: "/cartTwo"
+                        name: "Film Fotoğrafçılığı",
+                        href: "/shop?category=film-fotografciligi"
                     },
                     {
-                        name: "Cart View Three",
-                        href: "/cartThree"
+                        name: "Video Kameralar",
+                        href: "/shop?category=video-kameralar"
+                    }
+                ]
+            },
+            {
+                name: "Araç & Araç Elektroniği",
+                children: [
+                    {
+                        name: "Araç Elektronik Aksesuarları",
+                        href: "/shop?category=arac-elektronik-aksesuarlari"
                     },
                     {
-                        name: "Empty Cart",
-                        href: "/empty-cart"
+                        name: "Bluetooth Kulaklıklar",
+                        href: "/shop?category=arac-bluetooth-kulakliklar"
                     },
                     {
-                        name: "Checkout View One",
-                        href: "/checkout-one"
+                        name: "Hoparlör Sistemleri",
+                        href: "/shop?category=arac-hoparlor-sistemleri"
                     },
                     {
-                        name: "Checkout View Two",
-                        href: "/checkout-two"
+                        name: "Radar Dedektörleri",
+                        href: "/shop?category=radar-dedektorleri"
                     },
                     {
-                        name: "Wishlist",
-                        href: "/wishlist"
+                        name: "Araç Yedek Kameralar",
+                        href: "/shop?category=arac-yedek-kameralar"
+                    }
+                ]
+            },
+            {
+                name: "Kulaklıklar & Ses",
+                children: [
+                    {
+                        name: "Açık Kulak Kulaklıkları",
+                        href: "/shop?category=acik-kulak-kulakliklari"
                     },
                     {
-                        name: "Compare",
-                        href: "/compare"
+                        name: "Earbud Kulaklık",
+                        href: "/shop?category=earbud-kulaklik"
+                    }
+                ]
+            },
+            {
+                name: "Ev Sistemleri",
+                children: [
+                    {
+                        name: "Ev Ses Sistemleri",
+                        href: "/shop?category=ev-ses"
                     },
                     {
-                        name: "Order Tracking",
-                        href: "/order-tracking"
+                        name: "Video Projektörler",
+                        href: "/shop?category=video-projektorler"
                     },
                     {
-                        name: "Order Complete",
-                        href: "/order-complete"
+                        name: "Ev Sineması Sistemleri",
+                        href: "/shop?category=ev-sinemasi-sistemleri"
+                    }
+                ]
+            },
+            {
+                name: "Diğer Kategoriler",
+                children: [
+                    {
+                        name: "GPS ve Bulucular",
+                        href: "/shop?category=gps-bulucular"
                     },
+                    {
+                        name: "Giyilebilir Teknoloji",
+                        href: "/shop?category=giyilebilir-teknoloji"
+                    },
+                    {
+                        name: "Cep Telefonu Aksesuarları",
+                        href: "/shop?category=cep-telefonu-aksesuarlari"
+                    },
+                    {
+                        name: "Ofis Elektroniği",
+                        href: "/shop?category=ofis-elektronigi"
+                    },
+                    {
+                        name: "Güvenlik ve Gözetim",
+                        href: "/shop?category=guvenlik-gozetim"
+                    }
                 ]
             }
         ]
     },
     {
-        name: "Feature",
-        href: "#!",
-        children: [
-            {
-                name: "Product Hover",
-                href: "/product-hover"
-            },
-            {
-                name: "Order Success",
-                href: "/order-success"
-            },
-            {
-                name: " Email Template 1",
-                href: "/email-template-one"
-            },
-            {
-                name: "Email Template 2",
-                href: "/email-template-two"
-            },
-            {
-                name: " Email Template 3",
-                href: "/email-template-three"
-            },
-            {
-                name: " LookBook",
-                href: "/lookbooks"
-            },
-            {
-                name: "Invoice 1",
-                href: "/invoice-one"
-            },
-            {
-                name: " Invoice 2",
-                href: "/invoice-two"
-            }
-        ]
+        name: "Tüm Ürünler",
+        href: "/shop"
     },
     {
-        name: "Blog",
-        href: "#!",
-        children: [
-            {
-                name: " Blog Grid View One",
-                href: "/blog-grid-three"
-            },
-            {
-                name: "Blog Grid View Two",
-                href: "/blog-grid-two"
-            },
-            {
-                name: "Blog List View",
-                href: "/blog-list-view"
-            },
-            {
-                name: "Blog Single View One",
-                href: "/blog-single-one"
-            },
-            {
-                name: "Blog Single View TWo",
-                href: "/blog-single-two"
-            }
-        ]
+        name: "Hakkımızda",
+        href: "/about"
     },
     {
-        name: "Pages",
-        href: "#!",
-        children: [
-            {
-                name: "Vendor Dashboard",
-                href: "/vendor-dashboard"
-            },
-            {
-                name: "Customer Dashboard",
-                href: "/my-account"
-            },
-            {
-                name: "About Us",
-                href: "/about"
-            },
-            {
-                name: "Contact Us One",
-                href: "/contact-one"
-            },
-            {
-                name: "Contact Us Two",
-                href: "/contact-two"
-            },
-            {
-                name: "Frequently Questions",
-                href: "/faqs"
-            },
-            {
-                name: "Coming Soon",
-                href: "/coming-soon"
-            },
-            {
-                name: "Privacy Policy",
-                href: "/privacy-policy"
-            },
-            {
-                name: "Login",
-                href: "/login"
-            },
-            {
-                name: "404 Error",
-                href: "/error"
-            }
-
-        ]
+        name: "İletişim",
+        href: "/login"
     },
 ]
