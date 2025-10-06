@@ -41,10 +41,7 @@ const ProductDetailsOne = () => {
         dispatch({ type: "products/addToComp", payload: { id } })
     }
 
-    const colorSwatch = (i) => {
-        let data = product.color.find(item => item.color === i)
-        setImg(data.img)
-    }
+    // Color swatch fonksiyonu kaldırıldı - sadece ana görsel kullanıyoruz
 
     const [count, setCount] = useState(1)
 
@@ -96,23 +93,29 @@ const ProductDetailsOne = () => {
                 <div className="container">
                     <div className="row area_boxed">
                         <div className="col-lg-4">
-                            <div className="product_single_one_img">
-                                <img src={img} alt={product.title} />
-                            </div>
-                            {/* Ürün Galerisi */}
-                            <div className="product-gallery mt-3">
-                                <div className="row">
-                                    {product.images.slice(0, 4).map((image, index) => (
-                                        <div key={index} className="col-3">
-                                            <img 
-                                                src={image} 
-                                                alt={`${product.title} ${index + 1}`}
-                                                className={`img-thumbnail cursor-pointer ${img === image ? 'border-primary' : ''}`}
+                            <div className="product-image-container">
+                                <div className="main-product-image">
+                                    <img src={img} alt={product.title} className="main-image" />
+                                </div>
+                                
+                                {/* Thumbnail Galerisi */}
+                                <div className="product-gallery mt-4">
+                                    <h6 className="gallery-title">Ürün Görselleri</h6>
+                                    <div className="gallery-thumbnails">
+                                        {product.images.map((image, index) => (
+                                            <div 
+                                                key={index} 
+                                                className={`thumbnail-item ${img === image ? 'active' : ''}`}
                                                 onClick={() => setImg(image)}
-                                                style={{ cursor: 'pointer' }}
-                                            />
-                                        </div>
-                                    ))}
+                                            >
+                                                <img 
+                                                    src={image} 
+                                                    alt={`${product.title} ${index + 1}`}
+                                                    className="thumbnail-image"
+                                                />
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -123,12 +126,34 @@ const ProductDetailsOne = () => {
                                     <div className="brand-info mb-2">
                                         <small className="text-muted">Marka: {product.brand}</small>
                                     </div>
-                                    <div className="reviews_rating">
-                                        <RatingStar maxScore={5} rating={product.rating} id="rating-star-common" />
-                                        <span>({product.reviewCount} Müşteri Yorumu)</span>
-                                    </div>
-                                    <h4>₺{product.price.toLocaleString()} <del>${product.originalPrice}</del> </h4>
-                                    <p>{product.description}</p>
+                                <div className="reviews_rating">
+                                    <RatingStar maxScore={5} rating={product.rating} id="rating-star-common" />
+                                    <span>({product.reviewCount} Müşteri Yorumu)</span>
+                                </div>
+                                <div className="price-section">
+                                    <h4 className="current-price">₺{product.price.toLocaleString()}</h4>
+                                    <span className="original-price">Orijinal: ${product.originalPrice}</span>
+                                </div>
+                                
+                                {/* WhatsApp ve Telefon İletişim Butonları - Fiyatın hemen altında */}
+                                <div className="contact-buttons-price">
+                                    <a 
+                                        href={`https://wa.me/905551234567?text=Merhaba, ${product.title} ürünü hakkında bilgi almak istiyorum. Fiyat: ₺${product.price.toLocaleString()}`} 
+                                        target="_blank" 
+                                        rel="noopener noreferrer"
+                                        className="whatsapp-btn-price"
+                                    >
+                                        <i className="fab fa-whatsapp"></i>
+                                        WhatsApp ile İletişim
+                                    </a>
+                                    <a 
+                                        href="tel:+905551234567" 
+                                        className="phone-btn-price"
+                                    >
+                                        <i className="fa fa-phone"></i>
+                                        Telefon Et
+                                    </a>
+                                </div>
                                     <div className="customs_selects">
                                         <select name="product" className="customs_sel_box">
                                             <option value="volvo">Size</option>
@@ -138,26 +163,7 @@ const ProductDetailsOne = () => {
                                             <option value="learz">L</option>
                                         </select>
                                     </div>
-                                    <div className="variable-single-item">
-                                        <span>Color</span>
-                                        <div className="product-variable-color">
-                                            <label htmlFor="modal-product-color-red1">
-                                                <input name="modal-product-color" id="modal-product-color-red1"
-                                                    className="color-select" type="radio" onChange={() => { colorSwatch('red') }} defaultChecked/>
-                                                <span className="product-color-red"></span>
-                                            </label>
-                                            <label htmlFor="modal-product-color-green3">
-                                                <input name="modal-product-color" id="modal-product-color-green3"
-                                                    className="color-select" type="radio" onChange={() => { colorSwatch('green') }} />
-                                                <span className="product-color-green"></span>
-                                            </label>
-                                            <label htmlFor="modal-product-color-blue5">
-                                                <input name="modal-product-color" id="modal-product-color-blue5"
-                                                    className="color-select" type="radio" onChange={() => { colorSwatch('blue') }} />
-                                                <span className="product-color-blue"></span>
-                                            </label>
-                                        </div>
-                                    </div>
+                                    {/* Color seçimi kaldırıldı - sadece ana görsel kullanıyoruz */}
                                     <form id="product_count_form_two">
                                         <div className="product_count_one">
                                             <div className="plus-minus-input">
@@ -175,6 +181,15 @@ const ProductDetailsOne = () => {
                                             </div>
                                         </div>
                                     </form>
+                                    
+                                    {/* Ürün Açıklaması - Color bilgisinin altında */}
+                                    <div className="product-description-section mt-4">
+                                        <h5 className="description-title">Ürün Açıklaması</h5>
+                                        <div className="description-content">
+                                            <p>{product.description}</p>
+                                        </div>
+                                    </div>
+                                    
                                     <div className="links_Product_areas">
                                         <ul>
                                             <li>

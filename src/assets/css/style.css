@@ -10031,3 +10031,612 @@ html {
     outline-offset: 4px;
     border-radius: 8px;
 }
+
+
+/* Gelişmiş Ürün Detay Sayfası Stilleri */
+.product-image-container {
+    position: relative;
+}
+
+.main-product-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    background: #fff;
+    padding: 20px;
+}
+
+.main-image {
+    width: 100%;
+    height: 400px;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+}
+
+.main-product-image:hover .main-image {
+    transform: scale(1.05);
+}
+
+.image-zoom-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0,0,0,0.7);
+    color: white;
+    padding: 15px;
+    border-radius: 50%;
+    opacity: 0;
+    transition: all 0.3s ease;
+    pointer-events: none;
+}
+
+.main-product-image:hover .image-zoom-overlay {
+    opacity: 1;
+}
+
+.image-zoom-overlay i {
+    font-size: 24px;
+}
+
+/* Galeri Stilleri */
+.product-gallery {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid #e9ecef;
+}
+
+.gallery-title {
+    color: #333;
+    font-weight: 600;
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+.gallery-thumbnails {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    gap: 10px;
+}
+
+.thumbnail-item {
+    position: relative;
+    cursor: pointer;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.thumbnail-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.thumbnail-item.active {
+    border-color: #007bff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0,123,255,0.3);
+}
+
+.thumbnail-image {
+    width: 100%;
+    height: 80px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.thumbnail-item:hover .thumbnail-image {
+    transform: scale(1.1);
+}
+
+/* Fiyat Bölümü */
+.price-section {
+    margin: 20px 0;
+    padding: 20px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 12px;
+    border-left: 4px solid #007bff;
+}
+
+.current-price {
+    color: #007bff;
+    font-size: 32px;
+    font-weight: 700;
+    margin: 0;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+}
+
+.original-price {
+    color: #6c757d;
+    font-size: 16px;
+    text-decoration: line-through;
+    margin-left: 10px;
+}
+
+/* İletişim Butonları - Fiyat Altında */
+.contact-buttons-price {
+    display: flex;
+    gap: 15px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+}
+
+.whatsapp-btn-price, .phone-btn-price {
+    display: flex;
+    align-items: center;
+    padding: 12px 24px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #fff;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    flex: 1;
+    justify-content: center;
+    min-width: 200px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.whatsapp-btn-price {
+    background: linear-gradient(135deg, #25D366 0%, #1DA851 100%);
+}
+
+.whatsapp-btn-price:hover {
+    background: linear-gradient(135deg, #1DA851 0%, #25D366 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.3);
+    color: #fff;
+}
+
+.phone-btn-price {
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+}
+
+.phone-btn-price:hover {
+    background: linear-gradient(135deg, #0056b3 0%, #007bff 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 123, 255, 0.3);
+    color: #fff;
+}
+
+.contact-buttons-price i {
+    margin-right: 8px;
+    font-size: 18px;
+}
+
+/* Ürün Açıklaması Bölümü */
+.product-description-section {
+    background: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    border: 1px solid #e9ecef;
+    margin: 20px 0;
+}
+
+.description-title {
+    color: #333;
+    font-weight: 600;
+    margin-bottom: 15px;
+    font-size: 18px;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 8px;
+}
+
+.description-content {
+    line-height: 1.8;
+    color: #555;
+}
+
+.description-content p {
+    margin: 0;
+    font-size: 15px;
+    text-align: justify;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .main-image {
+        height: 300px;
+    }
+    
+    .gallery-thumbnails {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    
+    .thumbnail-image {
+        height: 60px;
+    }
+    
+    .current-price {
+        font-size: 24px;
+    }
+    
+    .contact-buttons-price {
+        flex-direction: column;
+    }
+    
+    .whatsapp-btn-price, .phone-btn-price {
+        min-width: auto;
+    }
+    
+    .gallery-title {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 576px) {
+    .main-image {
+        height: 250px;
+    }
+    
+    .gallery-thumbnails {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .thumbnail-image {
+        height: 50px;
+    }
+    
+    .current-price {
+        font-size: 20px;
+    }
+    
+    .product-description-section {
+        padding: 15px;
+    }
+}
+
+/* Hover Efektleri */
+.thumbnail-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,123,255,0.1);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.thumbnail-item:hover::before {
+    opacity: 1;
+}
+
+/* Focus States */
+.thumbnail-item:focus {
+    outline: 2px solid #007bff;
+    outline-offset: 2px;
+}
+
+.whatsapp-btn-price:focus,
+.phone-btn-price:focus {
+    outline: 2px solid #fff;
+    outline-offset: 2px;
+}
+
+
+/* Sadece Ana Görsel için Güncellenmiş Stiller */
+.product-image-container {
+    position: relative;
+}
+
+.main-product-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    background: #fff;
+    padding: 20px;
+    text-align: center;
+}
+
+.main-image {
+    width: 100%;
+    height: 500px;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+    border-radius: 8px;
+}
+
+.main-product-image:hover .main-image {
+    transform: scale(1.05);
+}
+
+.image-zoom-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0,0,0,0.7);
+    color: white;
+    padding: 15px;
+    border-radius: 50%;
+    opacity: 0;
+    transition: all 0.3s ease;
+    pointer-events: none;
+}
+
+.main-product-image:hover .image-zoom-overlay {
+    opacity: 1;
+}
+
+.image-zoom-overlay i {
+    font-size: 24px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .main-image {
+        height: 350px;
+    }
+}
+
+@media (max-width: 576px) {
+    .main-image {
+        height: 300px;
+    }
+    
+    .main-product-image {
+        padding: 15px;
+    }
+}
+
+
+/* Thumbnail Galerisi Stilleri */
+.product-gallery {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid #e9ecef;
+}
+
+.gallery-title {
+    color: #333;
+    font-weight: 600;
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+.gallery-thumbnails {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    gap: 10px;
+}
+
+.thumbnail-item {
+    position: relative;
+    cursor: pointer;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.thumbnail-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.thumbnail-item.active {
+    border-color: #007bff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0,123,255,0.3);
+}
+
+.thumbnail-image {
+    width: 100%;
+    height: 80px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.thumbnail-item:hover .thumbnail-image {
+    transform: scale(1.1);
+}
+
+/* Hover Efektleri */
+.thumbnail-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,123,255,0.1);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.thumbnail-item:hover::before {
+    opacity: 1;
+}
+
+/* Focus States */
+.thumbnail-item:focus {
+    outline: 2px solid #007bff;
+    outline-offset: 2px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .gallery-thumbnails {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    
+    .thumbnail-image {
+        height: 60px;
+    }
+}
+
+@media (max-width: 576px) {
+    .gallery-thumbnails {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .thumbnail-image {
+        height: 50px;
+    }
+    
+    .gallery-title {
+        font-size: 14px;
+    }
+}
+
+
+/* Düzeltilmiş Ana Görsel Stilleri */
+.product-image-container {
+    position: relative;
+}
+
+.main-product-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    background: #fff;
+    padding: 20px;
+    text-align: center;
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.main-image {
+    max-width: 100%;
+    max-height: 500px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+    border-radius: 8px;
+}
+
+.main-product-image:hover .main-image {
+    transform: scale(1.05);
+}
+
+/* Thumbnail Galerisi Stilleri */
+.product-gallery {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid #e9ecef;
+}
+
+.gallery-title {
+    color: #333;
+    font-weight: 600;
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+.gallery-thumbnails {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    gap: 10px;
+}
+
+.thumbnail-item {
+    position: relative;
+    cursor: pointer;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.thumbnail-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.thumbnail-item.active {
+    border-color: #007bff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0,123,255,0.3);
+}
+
+.thumbnail-image {
+    width: 100%;
+    height: 80px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.thumbnail-item:hover .thumbnail-image {
+    transform: scale(1.1);
+}
+
+/* Hover Efektleri */
+.thumbnail-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,123,255,0.1);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.thumbnail-item:hover::before {
+    opacity: 1;
+}
+
+/* Focus States */
+.thumbnail-item:focus {
+    outline: 2px solid #007bff;
+    outline-offset: 2px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .main-image {
+        max-height: 350px;
+    }
+    
+    .main-product-image {
+        min-height: 300px;
+        padding: 15px;
+    }
+    
+    .gallery-thumbnails {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    
+    .thumbnail-image {
+        height: 60px;
+    }
+}
+
+@media (max-width: 576px) {
+    .main-image {
+        max-height: 300px;
+    }
+    
+    .main-product-image {
+        min-height: 250px;
+        padding: 10px;
+    }
+    
+    .gallery-thumbnails {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .thumbnail-image {
+        height: 50px;
+    }
+    
+    .gallery-title {
+        font-size: 14px;
+    }
+}
