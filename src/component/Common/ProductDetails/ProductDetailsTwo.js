@@ -163,7 +163,7 @@ const ProductDetailsTwo = () => {
                                         {/* WhatsApp ve Telefon İletişim Butonları */}
                                         <div className="contact-buttons">
                                             <a 
-                                                href={`https://wa.me/905551234567?text=Merhaba, ${product.title} ürünü hakkında bilgi almak istiyorum.`} 
+                                                href={`https://wa.me/905551234567?text=Merhaba, ${product.title} ürünü hakkında bilgi almak istiyorum. Ürün Kodu: ${product.productCode} - Fiyat: ₺${product.price.toLocaleString()}`} 
                                                 target="_blank" 
                                                 rel="noopener noreferrer"
                                                 className="whatsapp-btn"

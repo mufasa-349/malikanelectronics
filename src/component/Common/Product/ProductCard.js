@@ -41,7 +41,7 @@ const ProductCard = (props) => {
                     </div>
                     <div className="product-actions">
                             <a 
-                                href={`https://wa.me/905393973949?text=Merhaba, ${props.data.title} ürünü hakkında bilgi almak istiyorum.`} 
+                                href={`https://wa.me/905393973949?text=Merhaba, ${props.data.title} ürünü hakkında bilgi almak istiyorum. Ürün Kodu: ${props.data.productCode} - Fiyat: ₺${props.data.price.toLocaleString()}`} 
                                 target="_blank" 
                                 rel="noopener noreferrer"
                                 className="whatsapp-btn-small"
