@@ -1,4 +1,3 @@
-import ProductInfo from './ProductInfo'
 import RelatedProduct from './RelatedProduct'
 import { Link } from 'react-router-dom'
 import { useState } from 'react'
@@ -185,7 +184,6 @@ const ProductDetailsTwo = () => {
                             </div>
                         </div>
                     </div>
-                    <ProductInfo />
                 </div>
             </section>
             :

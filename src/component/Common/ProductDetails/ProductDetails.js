@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react'
-import ProductInfo from './ProductInfo'
 import RelatedProduct from './RelatedProduct'
 import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from "react-redux";
@@ -310,7 +309,6 @@ const ProductDetailsOne = () => {
                             </div>
                         </div>
                     </div>
-                    <ProductInfo />
                 </div>
             </section>
             <RelatedProduct />
