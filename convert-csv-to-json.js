@@ -89,12 +89,17 @@ const cleanBrandName = (brandString) => {
     return brandString.trim();
 };
 
+// Ana görseli al
+const getMainImage = (mainImageString) => {
+    if (!mainImageString) return '';
+    return mainImageString.trim();
+};
+
 // Görselleri parse et
 const parseImages = (imagesString) => {
     if (!imagesString) return [];
     const images = imagesString.split(';').map(img => img.trim()).filter(img => img);
-    // İlk görseli ana görsel olarak ayarla
-    return images.length > 0 ? images : [];
+    return images;
 };
 
 const products = [];
@@ -102,17 +107,30 @@ const products = [];
 fs.createReadStream('amazon_products.csv')
     .pipe(csv())
     .on('data', (row) => {
+        // Marka adını temizle
+        const brandName = cleanBrandName(row['Marka']);
+        
+        // Ürün adını al
+        const originalTitle = row['Ürün Adı (TR)'] || row['Ürün Adı'] || 'Ürün Adı Yok';
+        
+        // Marka adını ürün adının başına ekle (eğer marka adı yoksa veya ürün adı zaten marka ile başlıyorsa ekleme)
+        const titleWithBrand = brandName && brandName !== 'Bilinmeyen Marka' && 
+                              !originalTitle.toLowerCase().startsWith(brandName.toLowerCase()) 
+                              ? `${brandName} ${originalTitle}` 
+                              : originalTitle;
+
         // Sadece gerekli alanları al
         const product = {
             id: products.length + 1,
-            title: row['Ürün Adı (TR)'] || row['Ürün Adı'] || 'Ürün Adı Yok',
+            title: titleWithBrand,
             titleEn: row['Ürün Adı'] || '',
             asin: row['ASIN/Ürün Kodu'] || '',
-            productCode: generateProductCode(row['Ürün Adı (TR)'] || row['Ürün Adı'] || ''),
+            productCode: generateProductCode(originalTitle),
             category: createCategorySlug(row['Kategori (TR)'] || row['Kategori']),
             categoryPath: row['Kategori (TR)'] || row['Kategori'] || '',
+            mainImage: getMainImage(row['Ana Görsel']),
             images: parseImages(row['Görseller']),
-            brand: cleanBrandName(row['Marka']),
+            brand: brandName,
             price: calculatePrice(row['Fiyat (USD)']),
             originalPrice: parseFloat(row['Fiyat (USD)']) || 0,
             description: row['Açıklama (TR)'] || row['Açıklama'] || '',

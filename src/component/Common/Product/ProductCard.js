@@ -26,8 +26,8 @@ const ProductCard = (props) => {
             <div className="product_wrappers_one">
                 <div className="thumb">
                     <Link to={`/product-details-one/${props.data.id}`} className="image">
-                        <img src={props.data.images[0]} alt={props.data.title} />
-                        <img className="hover-image" src={props.data.images[1] || props.data.images[0]}
+                        <img src={props.data.mainImage || props.data.images[0]} alt={props.data.title} />
+                        <img className="hover-image" src={props.data.images[1] || props.data.mainImage || props.data.images[0]}
                             alt={props.data.title} />
                     </Link>
                     <span className="badges">

@@ -19,7 +19,7 @@ const ProductCard = (props) => {
                 <div className="product_item_inner">
                     <div className="product_img_wrap">
                         <Link to={`/product-details-two/${props.data.id}`}>
-                            <img src={props.data.img} alt="product_img" />
+                            <img src={props.data.mainImage || props.data.images?.[0] || props.data.img} alt="product_img" />
                         </Link>
                     </div>
                     <div className="product_button">

@@ -28,7 +28,9 @@ const ProductDetailsOne = () => {
     
     // Product yüklendiğinde ana görseli ata
     useEffect(() => {
-        if (product?.images?.length) {
+        if (product?.mainImage) {
+            setImg(product.mainImage);
+        } else if (product?.images?.length) {
             setImg(product.images[0]);
         } else {
             setImg(null);

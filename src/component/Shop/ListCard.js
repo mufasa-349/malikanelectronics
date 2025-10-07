@@ -34,7 +34,7 @@ const ListCard = (props) => {
                         <div className="col-lg-3">
                             <div className="thumb">
                                 <Link to={ `/product-details-one/${props.data.id}`} className="image">
-                                    <img src={props.data.img} alt="Product" />
+                                    <img src={props.data.mainImage || props.data.images?.[0] || props.data.img} alt="Product" />
                                 </Link>
                             </div>
                         </div>
