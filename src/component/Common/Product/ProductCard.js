@@ -47,7 +47,7 @@ const ProductCard = (props) => {
                                 className="whatsapp-btn-small"
                                 title="WhatsApp ile İletişim"
                             >
-                                <i className="fab fa-whatsapp"></i>
+                                <i className="fab fa-whatsapp" style={{fontSize: '16px', marginRight: '6px'}}></i>
                             </a>
                             <a 
                                 href="tel:+905393973949" 

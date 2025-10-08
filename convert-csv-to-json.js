@@ -34,11 +34,11 @@ const createCategorySlug = (categoryPath) => {
         } else if (categoryPath.includes('Kamera') || categoryPath.includes('Fotoğraf') || categoryPath.includes('Video')) {
             return 'kamera-fotograf';
         } else if (categoryPath.includes('Araç') || categoryPath.includes('Araba') || categoryPath.includes('Motosiklet') || categoryPath.includes('Bisiklet')) {
-            return 'arac-elektronik';
+            return 'elektronik';
         } else if (categoryPath.includes('Telefon') || categoryPath.includes('Cep Telefonu') || categoryPath.includes('Şarj')) {
-            return 'telefon-aksesuarlari';
+            return 'elektronik';
         } else if (categoryPath.includes('Ses') || categoryPath.includes('Kulaklık') || categoryPath.includes('Hoparlör')) {
-            return 'ses-ve-muzik';
+            return 'elektronik';
         } else if (categoryPath.includes('Gaming') || categoryPath.includes('Oyun') || categoryPath.includes('Konsol')) {
             return 'oyun-ve-eğlence';
         } else {
@@ -47,7 +47,7 @@ const createCategorySlug = (categoryPath) => {
     } else if (mainCategory.includes('Ev') || mainCategory.includes('Mutfak')) {
         return 'ev-mutfak';
     } else if (mainCategory.includes('Spor') || mainCategory.includes('Açık Hava')) {
-        return 'spor-acik-hava';
+        return 'genel';
     } else if (mainCategory.includes('Giyim') || mainCategory.includes('Moda')) {
         return 'giyim-aksesuarlari';
     } else if (mainCategory.includes('Sağlık') || mainCategory.includes('Kişisel Bakım')) {

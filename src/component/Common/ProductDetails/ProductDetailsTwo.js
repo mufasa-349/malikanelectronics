@@ -167,7 +167,7 @@ const ProductDetailsTwo = () => {
                                                 rel="noopener noreferrer"
                                                 className="whatsapp-btn"
                                             >
-                                                <i className="fab fa-whatsapp"></i>
+                                                <i className="fab fa-whatsapp" style={{fontSize: '18px', marginRight: '8px'}}></i>
                                                 WhatsApp ile İletişim
                                             </a>
                                             <a 

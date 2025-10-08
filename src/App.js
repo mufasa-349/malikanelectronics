@@ -13,6 +13,7 @@ const Jewllary = loadable(() => pMinDelay(import('./page/jewllary'), 250), { fal
 const BabyToys = loadable(() => pMinDelay(import('./page/baby-toys'), 250), { fallback: <Loading /> });
 const ShopGrid = loadable(() => pMinDelay(import('./page/shop'), 250), { fallback: <Loading /> });
 const CategoryPage = loadable(() => pMinDelay(import('./page/shop/category'), 250), { fallback: <Loading /> });
+const CategoryPageNew = loadable(() => pMinDelay(import('./component/Common/CategoryPage'), 250), { fallback: <Loading /> });
 const ShopTwo = loadable(() => pMinDelay(import('./page/shop/shop-two'), 250), { fallback: <Loading /> });
 const ShopList = loadable(() => pMinDelay(import('./page/shop/shop-list'), 250), { fallback: <Loading /> });
 const ShopLeftSideBar = loadable(() => pMinDelay(import('./page/shop/shop-left-sidebar'), 250), { fallback: <Loading /> });
@@ -82,6 +83,7 @@ const App = () => {
             <Route path='/baby-toys' exact component={BabyToys} />
             <Route path='/shop' exact component={ShopGrid} />
             <Route path='/shop/category/:categorySlug' exact component={CategoryPage} />
+            <Route path='/category/:categorySlug' exact component={CategoryPageNew} />
             <Route path='/shopTwo' exact component={ShopTwo} />
             <Route path='/shoplist' exact component={ShopList} />
             <Route path='/shop-left-bar' exact component={ShopLeftSideBar} />

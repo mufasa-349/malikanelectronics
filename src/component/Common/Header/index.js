@@ -102,7 +102,7 @@ const Header = () => {
                     <div className="header-bottom header-bottom-color--golden section-fluid sticky-header sticky-color--golden">
                         <div className="container">
                             <div className="row">
-                                <div className="col-12 d-flex align-items-center justify-content-between">
+                                <div className="col-12 d-flex align-items-center">
                                     <div className="header-logo">
                                         <div className="logo">
                                             <Link to="/"><img src={logo} alt="logo" /></Link>
@@ -120,25 +120,19 @@ const Header = () => {
 
                                     <ul className="header-action-link action-color--black action-hover-color--golden">
                                         <li>
-                                            {favorites.length
-                                                ? <a href="#offcanvas-wishlish" className="offcanvas-toggle" onClick={handleWish}><i className="fa fa-heart"></i><span className="item-count">{favorites.length}</span></a>
-                                                : <a href="#offcanvas-wishlish" className="offcanvas-toggle"><i className="fa fa-heart"></i><span className="item-count">{favorites.length}</span></a>
-                                            }
-                                        </li>
-                                        <li>
-                                            {carts.length
-                                                ? <a href="#!" className="offcanvas-toggle" onClick={handleClick}><i className="fa fa-shopping-bag"></i><span className="item-count">{carts.length}</span></a>
-                                                : <a href="#!" className="offcanvas-toggle"><i className="fa fa-shopping-bag"></i><span className="item-count">{carts.length}</span></a>
-                                            }
-                                        </li>
-                                        <li>
                                             <a href="#search" className="search_width" onClick={handleSearch} >
                                                 <img src={svgsearch} alt="img" />
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="#offcanvas-about" className="offacnvas offside-about offcanvas-toggle" onClick={handleabout}>
-                                                <i className="fa fa-bars"></i>
+                                            <a 
+                                                href="https://wa.me/905393973949?text=Merhaba, Malikane Electronics ürünleriniz hakkında bilgi almak istiyorum." 
+                                                target="_blank" 
+                                                rel="noopener noreferrer"
+                                                className="whatsapp-btn-header"
+                                                title="WhatsApp ile İletişim"
+                                            >
+                                                <i className="fab fa-whatsapp" style={{fontSize: '28px', color: '#25D366'}}></i>
                                             </a>
                                         </li>
                                     </ul>

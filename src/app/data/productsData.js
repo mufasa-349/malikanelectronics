@@ -23,6 +23,7 @@ export const getProductsData = () => {
     return allProductsData
 }
 
+
 // Eski 5 ürünlü versiyon (backup için)
 export const getFirstFiveProducts = () => {
     return [
