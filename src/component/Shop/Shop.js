@@ -3,6 +3,7 @@ import ProductCard from '../Common/Product/ProductCard'
 import Filter from './Filter'
 import { useSelector } from "react-redux";
 import { getProductsData } from '../../app/data/productsData';
+import BabyHeading from '../BabyToys/Heading';
 const Shop = () => {
     const [allProducts, setAllProducts] = useState([])
     const [filteredProducts, setFilteredProducts] = useState([])
@@ -99,6 +100,9 @@ const Shop = () => {
         <>
             <section id="shop_main_area" className="ptb-100">
                 <div className="container">
+                    {/* Başlık */}
+                    <BabyHeading heading="Tüm Ürünler" />
+                    
                     {/* Filter Bileşeni */}
                     <div className="row mb-4">
                         <div className="col-lg-6 col-md-12">

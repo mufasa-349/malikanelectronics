@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route, BrowserRouter } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 import loadable from './component/Common/loader/loadable';
 import Loading from './component/Common/loader';
 import pMinDelay from 'p-min-delay';
@@ -64,12 +65,17 @@ const Faqs = loadable(() => pMinDelay(import('./page/faqs'), 250), { fallback: <
 const ComingSoon = loadable(() => pMinDelay(import('./page/coming-soon'), 250), { fallback: <Loading /> });
 const ContactOne = loadable(() => pMinDelay(import('./page/contact'), 250), { fallback: <Loading /> });
 const ContactTwo = loadable(() => pMinDelay(import('./page/contact/contact-two'), 250), { fallback: <Loading /> });
+const Contact = loadable(() => pMinDelay(import('./page/contact'), 250), { fallback: <Loading /> });
 const ScrollToTop = loadable(() => pMinDelay(import('./component/Common/ScrollToTop'), 250), { fallback: <Loading /> });
 const Fashion = loadable(() => pMinDelay(import('./page/'), 250), { fallback: <Loading /> });
 
 const App = () => {
   return (
     <>
+      <Helmet>
+        <title>Malikane - Teknoloji Sarayı</title>
+        <meta name="description" content="Malikane Electronics - Teknoloji ürünlerinde güvenilir adresiniz" />
+      </Helmet>
       <BrowserRouter>
         <Router>
           <ScrollToTop />
@@ -133,6 +139,7 @@ const App = () => {
             <Route path='/coming-soon' exact component={ComingSoon} />
             <Route path='/contact-one' exact component={ContactOne} />
             <Route path='/contact-two' exact component={ContactTwo} />
+            <Route path='/contact' exact component={Contact} />
             <Route exact component={Error} />
           </Switch>
         </Router>

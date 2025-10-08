@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import logo from '../../../assets/img/logo.png'
-import logoWhite from '../../../assets/img/logo-white.png'
+import logo from '../../../assets/img/malikane-electronics-logo-removebg-preview.png'
+import logoWhite from '../../../assets/img/malikane-electronics-logo-removebg-preview.png'
 import { MenuData } from './MenuData'
 import NaveItems from './NaveItems'
 import TopHeader from './TopHeader'
@@ -145,48 +145,29 @@ const Header = () => {
 
             <div className="mobile-header sticky-header sticky-color--golden mobile-header-bg-color--golden section-fluid d-lg-block d-xl-none">
                 <div className="container">
-                    <div className="row">
-                        <div className="col-12 d-flex align-items-center justify-content-between">
+                    <div className="mobile-header-content">
+                        <div className="mobile-logo">
+                            <Link to="/">
+                                <img src={logo} alt="Malikane Electronics Logo" />
+                            </Link>
+                        </div>
 
-                            <div className="mobile-header-left">
-                                <ul className="mobile-menu-logo">
-                                    <li>
-                                        <Link to="/">
-                                            <div className="logo">
-                                                <img src={logo} alt="logo" />
-                                            </div>
-                                        </Link>
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <div className="mobile-right-side">
-                                <ul className="header-action-link action-color--black action-hover-color--golden">
-                                    <li>
-                                        <a href="#!" className="search_width" onClick={handleSearch}>
-                                            <img src={svgsearch} alt="img" />
-                                        </a>
-                                    </li>
-                                    <li>
-                                        {favorites.length
-                                            ? <a href="#offcanvas-wishlish" className="offcanvas-toggle" onClick={handleWish}><i className="fa fa-heart"></i><span className="item-count">{favorites.length}</span></a>
-                                            : <a href="#offcanvas-wishlish" className="offcanvas-toggle"><i className="fa fa-heart"></i><span className="item-count">{favorites.length}</span></a>
-                                        }
-                                    </li>
-                                    <li>
-                                        {carts.length
-                                            ? <a href="#!" className="offcanvas-toggle" onClick={handleClick}><i className="fa fa-shopping-bag"></i><span className="item-count">{carts.length}</span></a>
-                                            : <a href="#!" className="offcanvas-toggle"><i className="fa fa-shopping-bag"></i><span className="item-count">{carts.length}</span></a>
-                                        }
-                                    </li>
-                                    <li>
-                                        <a href="#!" className="offcanvas-toggle offside-menu" onClick={handlemenu}>
-                                            <i className="fa fa-bars"></i>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-
+                        <div className="mobile-actions">
+                            <a href="#!" className="search-btn" onClick={handleSearch}>
+                                <i className="fa fa-search"></i>
+                            </a>
+                            <a 
+                                href="https://wa.me/905393973949?text=Merhaba, Malikane Electronics ürünleriniz hakkında bilgi almak istiyorum." 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="whatsapp-btn-mobile"
+                                title="WhatsApp ile İletişim"
+                            >
+                                <i className="fab fa-whatsapp"></i>
+                            </a>
+                            <a href="#!" className="menu-btn" onClick={handlemenu}>
+                                <i className="fa fa-bars"></i>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -204,117 +185,53 @@ const Header = () => {
                         <div className="offcanvas-menu">
                             <ul>
                                 <li>
-                                    <a href="#!" onClick={() => handleShow("home")}><span>Home</span></a>
-                                    {
-                                        show === "home" ?
-                                            <ul className="mobile-sub-menu">
-                                                <li><Link to="/">Fashion</Link></li>
-                                                <li><Link to="/furniture">Furniture</Link></li>
-                                                <li><Link to="/electronics">Electronics</Link></li>
-                                            </ul> : null
-                                    }
-
+                                    <Link to="/"><span>Ana Sayfa</span></Link>
                                 </li>
-                                <li >
-                                    <a href="#!" onClick={() => handleShow("shop")}><span>Shop</span></a>
-                                    {
-                                        show === "shop" ? <>
-                                            <ul className="mobile-sub-menu">
-                                                <li>
-                                                    <a href="#!">Shop Layout</a>
-                                                    <ul className="mobile-sub-menu">
-                                                        <li><Link to="/shop">Shop Four Grid</Link></li>
-                                                        <li><Link to="/shopTwo">Shop Three Grid</Link></li>
-                                                        <li><Link to="/shoplist">Shop List View</Link></li>
-                                                        <li><Link to="/shop-left-bar">Shop Left Sidebar</Link></li>
-                                                        <li><Link to="/shop-right-bar">Shop Right Sidebar</Link></li>
-                                                    </ul>
-                                                </li>
-                                            </ul>
-
-                                            <ul className="mobile-sub-menu">
-                                                <li>
-                                                    <a href="#!">Shop Pages</a>
-                                                    <ul className="mobile-sub-menu">
-                                                        <li><Link to="/cart">Cart View One</Link></li>
-                                                        <li><Link to="/cartTwo">Cart View Two </Link></li>
-                                                        <li><Link to="/empty-cart">Empty Cart</Link></li>
-                                                        <li><Link to="/checkout-one">Checkout View One</Link></li>
-                                                        <li><Link to="/checkout-two">Checkout View Two</Link></li>
-                                                        <li><Link to="/wishlist">Wishlist</Link></li>
-                                                        <li><Link to="/compare">Compare</Link></li>
-                                                        <li><Link to="/order-tracking">Order Tracking</Link></li>
-                                                        <li><Link to="/order-complete">Order Complete</Link></li>
-                                                    </ul>
-                                                </li>
-                                            </ul>
-                                            <ul className="mobile-sub-menu">
-                                                <li>
-                                                    <a href="#!">Product Single</a>
-                                                    <ul className="mobile-sub-menu">
-                                                        <li><Link to="/product-details-one/1">Product Single</Link></li>
-                                                        <li><Link to="/product-details-two/1">Product Single Two</Link></li>
-                                                    </ul>
-                                                </li>
-                                            </ul>
-                                        </> : null
-                                    }
-
-                                </li>
+                                {MenuData.map((item, index) => (
+                                    <li key={index}>
+                                        <Link to={item.href}><span>{item.name}</span></Link>
+                                    </li>
+                                ))}
                                 <li>
-                                    <a href="#!" onClick={() => handleShow("feature")}><span>Feature</span></a>
-                                    {
-                                        show === "feature" ?
-
-                                            <ul className="mobile-sub-menu">
-                                                <li><Link to="/product-hover">Product Hover</Link></li>
-                                                <li><Link to="/order-success">Order Success</Link></li>
-                                                <li><Link to="/email-template-one">Email Template 1</Link></li>
-                                                <li><Link to="/email-template-two">Email Template 2</Link></li>
-                                                <li><Link to="/email-template-three">Email Template 3</Link></li>
-                                                <li><Link to="/lookbooks">LookBook</Link></li>
-                                                <li><Link to="/invoice-one">Invoice 1</Link></li>
-                                                <li><Link to="/invoice-two">Invoice 2</Link></li>
-                                            </ul>
-
-                                            : null
-                                    }
-                                </li>
-                                <li>
-                                    <a href="#!" onClick={() => handleShow("blogs")}><span>Blogs</span></a>
-                                    {
-                                        show === "blogs" ?
-                                            <ul className="mobile-sub-menu">
-                                                <li><Link to="/blog-grid-three">Blog Grid View One</Link></li>
-                                                <li><Link to="/blog-grid-two">Blog Grid View Two</Link></li>
-                                                <li><Link to="/blog-list-view">Blog List View</Link></li>
-                                                <li><Link to="/blog-single-one">Blog Single View One </Link></li>
-                                                <li><Link to="/blog-single-two">Blog Single View TWo</Link></li>
-                                            </ul>
-                                            : null
-                                    }
-                                </li>
-                                <li>
-                                    <a href="#!" onClick={() => handleShow("pages")}><span>Pages</span></a>
-
-                                    {
-                                        show === "pages" ?
-                                            <ul className="mobile-sub-menu">
-                                                <li><Link to="/about">About Us</Link></li>
-                                                <li><Link to="/vendor-dashboard">Vendor</Link></li>
-                                                <li><Link to="/my-account">My Account</Link></li>
-                                                <li><Link to="/contact-one">Contact Us One</Link></li>
-                                                <li><Link to="/contact-two">Contact Us Two</Link></li>
-                                                <li><Link to="/coming-soon">Coming Soon</Link></li>
-                                                <li><Link to="/faqs">Frequently Questions</Link></li>
-                                                <li><Link to="/privacy-policy">Privacy Policy</Link></li>
-                                                <li><Link to="/error">404 Page</Link></li>
-                                                <li><Link to="/login">Login</Link></li>
-                                            </ul>
-                                            : null
-                                    }
+                                    <Link to="/contact"><span>İletişim</span></Link>
                                 </li>
                             </ul>
+                        </div>
+
+                        {/* Arama Bölümü */}
+                        <div className="mobile-search-section" style={{padding: '20px 0', borderTop: '1px solid #eee', marginTop: '20px'}}>
+                            <h4 style={{marginBottom: '15px', color: '#333'}}>Ürün Ara</h4>
+                            <div className="mobile-search-box">
+                                <input 
+                                    type="text" 
+                                    placeholder="Ürün adı, marka veya kategori ara..." 
+                                    style={{
+                                        width: '100%',
+                                        padding: '12px 15px',
+                                        border: '1px solid #ddd',
+                                        borderRadius: '25px',
+                                        fontSize: '14px',
+                                        outline: 'none'
+                                    }}
+                                />
+                                <button 
+                                    style={{
+                                        position: 'absolute',
+                                        right: '5px',
+                                        top: '50%',
+                                        transform: 'translateY(-50%)',
+                                        background: '#007bff',
+                                        border: 'none',
+                                        borderRadius: '50%',
+                                        width: '35px',
+                                        height: '35px',
+                                        color: 'white',
+                                        cursor: 'pointer'
+                                    }}
+                                >
+                                    <i className="fa fa-search"></i>
+                                </button>
+                            </div>
                         </div>
 
                     </div>
@@ -323,28 +240,31 @@ const Header = () => {
                             <Link to="/"><img src={logoWhite} alt="img" /></Link>
                         </div>
                         <address className="address">
-                            <span>Address: Your address goes here.</span>
-                            <span>Call Us: 0123456789, 0123456789</span>
-                            <span>Email: demo@example.com</span>
+                            <span>Adres: Gültepe, Girne Sokak No1-3d, Küçükçekmece İstanbul</span>
+                            <span>Telefon: +90 539 397 39 49</span>
+                            <span>E-posta: mufasabozyel@gmail.com</span>
                         </address>
                         <ul className="social-link">
                             <li>
-                                <a href="#!"><i className="fa fa-facebook"></i></a>
+                                <a 
+                                    href="https://wa.me/905393973949?text=Merhaba, Malikane Electronics ürünleriniz hakkında bilgi almak istiyorum." 
+                                    target="_blank" 
+                                    rel="noopener noreferrer"
+                                    title="WhatsApp"
+                                >
+                                    <i className="fab fa-whatsapp" style={{color: '#25D366'}}></i>
+                                </a>
                             </li>
                             <li>
-                                <a href="#!"><i className="fa fa-twitter"></i></a>
+                                <a href="tel:+905393973949" title="Telefon">
+                                    <i className="fa fa-phone" style={{color: '#007bff'}}></i>
+                                </a>
                             </li>
                             <li>
-                                <a href="#!"><i className="fa fa-instagram"></i></a>
+                                <a href="mailto:mufasabozyel@gmail.com" title="E-posta">
+                                    <i className="fa fa-envelope" style={{color: '#dc3545'}}></i>
+                                </a>
                             </li>
-                            <li>
-                                <a href="#!"><i className="fa fa-linkedin"></i></a>
-                            </li>
-                        </ul>
-                        <ul className="user-link">
-                            <li><Link to="/wishlist">Wishlist</Link></li>
-                            <li><Link to="/cart">Cart</Link></li>
-                            <li><Link to="/checkout-one">Checkout</Link></li>
                         </ul>
                     </div>
 

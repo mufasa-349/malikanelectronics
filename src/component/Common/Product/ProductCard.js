@@ -1,10 +1,6 @@
-import React, { useState } from 'react'
-import { AiOutlineHeart } from 'react-icons/ai';
-import { AiOutlineExpand } from 'react-icons/ai';
-import { FaExchangeAlt } from 'react-icons/fa';
+import React from 'react'
 import { Link } from 'react-router-dom';
 import { useDispatch } from "react-redux";
-import MyVerticallyCenteredModal from '../../Common/Modal';
 import { incrementWhatsAppClick } from '../../../utils/whatsappTracker';
 
 const ProductCard = (props) => {
@@ -13,21 +9,11 @@ const ProductCard = (props) => {
     const addToCart = async (id) => {
         dispatch({ type: "products/addToCart", payload: { id } })
     }
-    // Add to Favorite
-    const addToFav = async (id) => {
-        dispatch({ type: "products/addToFav", payload: { id } })
-    }
-    // Add to Compare
-    const addToComp = async (id) => {
-        dispatch({ type: "products/addToComp", payload: { id } })
-    }
 
     // WhatsApp tıklama sayısını artır
     const handleWhatsAppClick = (productId) => {
         incrementWhatsAppClick(productId);
     }
-
-    const [modalShow, setModalShow] = useState(false);
     return (
         <>
             <div className="product_wrappers_one">
@@ -41,11 +27,6 @@ const ProductCard = (props) => {
                         <span className="new">Yeni</span>
                         {props.data.inStock ? <span className="sale">Stokta</span> : <span className="hot">Tükendi</span>}
                     </span>
-                    <div className="actions">
-                        <a href="#!" className="action wishlist" title="Wishlist" onClick={() => addToFav(props.data.id)}><AiOutlineHeart /></a>
-                        <a href="#!" className="action quickview" title="Quick view" onClick={() => setModalShow(true)}><AiOutlineExpand /></a>
-                        <a href="#!" className="action compare" title="Compare" onClick={() => addToComp(props.data.id)}><FaExchangeAlt /></a>
-                    </div>
                     <div className="product-actions">
                         <a 
                             href={`https://wa.me/905393973949?text=Merhaba, ${props.data.title} ürünü hakkında bilgi almak istiyorum. Ürün Kodu: ${props.data.productCode} - Fiyat: ₺${props.data.price.toLocaleString()}`} 
@@ -55,7 +36,7 @@ const ProductCard = (props) => {
                             title="WhatsApp ile İletişim"
                             onClick={() => handleWhatsAppClick(props.data.id)}
                         >
-                            <i className="fab fa-whatsapp" style={{fontSize: '16px', marginRight: '6px'}}></i>
+                            <i className="fab fa-whatsapp" style={{fontSize: '16px'}}></i>
                         </a>
                             <a 
                                 href="tel:+905393973949" 
@@ -93,7 +74,6 @@ const ProductCard = (props) => {
                 </div>
             </div>
 
-            <MyVerticallyCenteredModal data={props.data} show={modalShow} onHide={() => setModalShow(false)} />
         </>
     )
 }

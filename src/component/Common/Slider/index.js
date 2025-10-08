@@ -1,49 +1,45 @@
 import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
+import banner1 from '../../../assets/img/banner1.png'
+import banner2 from '../../../assets/img/banner2.png'
+import banner3 from '../../../assets/img/banner3.png'
+import banner4 from '../../../assets/img/banner4.png'
+import banner5 from '../../../assets/img/banner5.png'
 
 const Slider = () => {
     const [currentSlide, setCurrentSlide] = useState(0)
     
-    // Placeholder banner resimleri - local placeholder kullan
+    // Gerçek banner resimleri - tıklanabilir linklerle
     const slides = [
         {
             id: 1,
-            image: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwMCIgaGVpZ2h0PSI0MDAiIHZpZXdCb3g9IjAgMCAxMjAwIDQwMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjEyMDAiIGhlaWdodD0iNDAwIiBmaWxsPSIjMDA3YmZmIi8+Cjx0ZXh0IHg9IjYwMCIgeT0iMjAwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iNDgiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5CYW5uZXIgMTwvdGV4dD4KPC9zdmc+',
-            title: 'Elektronik Ürünlerde Büyük İndirim',
-            subtitle: 'En kaliteli ürünler, en uygun fiyatlarla',
-            buttonText: 'Alışverişe Başla',
-            buttonLink: '/shop'
+            image: banner1,
+            link: '/category/elektronik',
+            external: false
         },
         {
             id: 2,
-            image: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwMCIgaGVpZ2h0PSI0MDAiIHZpZXdCb3g9IjAgMCAxMjAwIDQwMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjEyMDAiIGhlaWdodD0iNDAwIiBmaWxsPSIjMjhhNzQ1Ii8+Cjx0ZXh0IHg9IjYwMCIgeT0iMjAwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iNDgiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5CYW5uZXIgMjwvdGV4dD4KPC9zdmc+',
-            title: 'Yeni Gelen Ürünler',
-            subtitle: 'Son teknoloji ürünleri keşfedin',
-            buttonText: 'Keşfet',
-            buttonLink: '/shop'
+            image: banner2,
+            link: '/category/bilgisayar-aksesuarlari',
+            external: false
         },
         {
             id: 3,
-            image: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwMCIgaGVpZ2h0PSI0MDAiIHZpZXdCb3g9IjAgMCAxMjAwIDQwMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjEyMDAiIGhlaWdodD0iNDAwIiBmaWxsPSIjZGMzNTQ1Ii8+Cjx0ZXh0IHg9IjYwMCIgeT0iMjAwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iNDgiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5CYW5uZXIgMzwvdGV4dD4KPC9zdmc+',
-            title: 'Kampanya Fırsatları',
-            subtitle: 'Sınırlı süreli özel fiyatlar',
-            buttonText: 'Fırsatları Gör',
-            buttonLink: '/shop'
+            image: banner3,
+            link: '/category/kamera-fotograf',
+            external: false
         },
         {
             id: 4,
-            image: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwMCIgaGVpZ2h0PSI0MDAiIHZpZXdCb3g9IjAgMCAxMjAwIDQwMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjEyMDAiIGhlaWdodD0iNDAwIiBmaWxsPSIjZmZjMTA3Ii8+Cjx0ZXh0IHg9IjYwMCIgeT0iMjAwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iNDgiIGZpbGw9ImJsYWNrIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5CYW5uZXIgNDwvdGV4dD4KPC9zdmc+',
-            title: 'Premium Kalite',
-            subtitle: 'Sadece en iyi markalar',
-            buttonText: 'İncele',
-            buttonLink: '/shop'
+            image: banner4,
+            link: '/category/genel',
+            external: false
         },
         {
             id: 5,
-            image: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwMCIgaGVpZ2h0PSI0MDAiIHZpZXdCb3g9IjAgMCAxMjAwIDQwMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjEyMDAiIGhlaWdodD0iNDAwIiBmaWxsPSIjNmY0MmM1Ii8+Cjx0ZXh0IHg9IjYwMCIgeT0iMjAwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iNDgiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5CYW5uZXIgNTwvdGV4dD4KPC9zdmc+',
-            title: 'Hızlı Teslimat',
-            subtitle: 'Aynı gün kargo imkanı',
-            buttonText: 'Sipariş Ver',
-            buttonLink: '/shop'
+            image: banner5,
+            link: 'https://www.hepsiburada.com',
+            external: true
         }
     ]
 
@@ -79,24 +75,45 @@ const Slider = () => {
                             style={{
                                 backgroundImage: `url(${slide.image})`,
                                 backgroundSize: 'cover',
-                                backgroundPosition: 'center'
+                                backgroundPosition: 'center',
+                                backgroundRepeat: 'no-repeat'
                             }}
                         >
-                            <div className="slide-content">
-                                <div className="container">
-                                    <div className="row">
-                                        <div className="col-lg-6">
-                                            <div className="slide-text">
-                                                <h1 className="slide-title">{slide.title}</h1>
-                                                <p className="slide-subtitle">{slide.subtitle}</p>
-                                                <a href={slide.buttonLink} className="btn btn-primary btn-lg">
-                                                    {slide.buttonText}
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            {slide.external ? (
+                                <a 
+                                    href={slide.link} 
+                                    target="_blank" 
+                                    rel="noopener noreferrer"
+                                    className="slide-link"
+                                    style={{
+                                        display: 'block',
+                                        width: '100%',
+                                        height: '100%',
+                                        cursor: 'pointer',
+                                        position: 'absolute',
+                                        top: 0,
+                                        left: 0,
+                                        zIndex: 2
+                                    }}
+                                >
+                                </a>
+                            ) : (
+                                <Link 
+                                    to={slide.link} 
+                                    className="slide-link"
+                                    style={{
+                                        display: 'block',
+                                        width: '100%',
+                                        height: '100%',
+                                        cursor: 'pointer',
+                                        position: 'absolute',
+                                        top: 0,
+                                        left: 0,
+                                        zIndex: 2
+                                    }}
+                                >
+                                </Link>
+                            )}
                         </div>
                     ))}
                 </div>

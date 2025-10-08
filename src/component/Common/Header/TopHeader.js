@@ -26,23 +26,21 @@ const TopHeader = () => {
             <section id="top_header">
                 <div className="container">
                     <div className="row">
-                        <div className="col-lg-6 col-md-6 col-sm-12 col-12">
+                        <div className="col-lg-8 col-md-8 col-sm-12 col-12">
                             <div className="top_header_left">
-                                <p>Special collection already available.<Link to="/shop">Read more...</Link></p>
+                                <p>Yeni ürünlerimize göz atın. <Link to="/shop">Tüm ürünleri görüntüle</Link></p>
                             </div>
                         </div>
-                        <div className="col-lg-6 col-md-6 col-sm-12 col-12">
+                        <div className="col-lg-4 col-md-4 col-sm-12 col-12">
                             <div className="top_header_right">
                                 {
                                     !status ?
                                         <ul className="right_list_fix">
-                                            <li><Link to="/compare"><i className="fa fa-refresh"></i> Compare</Link></li>
-                                            <li><Link to="/login"><i className="fa fa-user"></i> Login</Link></li>
-                                            <li><Link to="/register"><i className="fa fa-lock"></i> Register</Link></li>
+                                            <li><a href="https://wa.me/905393973949?text=Merhaba, sipariş takibi hakkında bilgi almak istiyorum." target="_blank" rel="noopener noreferrer"><i className="fa fa-truck"></i> Sipariş Takibi</a></li>
                                         </ul>
                                         :
                                         <ul className="right_list_fix">
-                                            <li><Link to="/order-tracking"><i className="fa fa-truck"></i> Track your Order</Link></li>
+                                            <li><a href="https://wa.me/905393973949?text=Merhaba, sipariş takibi hakkında bilgi almak istiyorum." target="_blank" rel="noopener noreferrer"><i className="fa fa-truck"></i> Sipariş Takibi</a></li>
                                             <li className="after_login"><img src={avater} alt="avater" /> {user.name || 'Jhon Doe'} <i className="fa fa-angle-down"></i>
                                                 <ul className="custom_dropdown">
                                                     <li><Link to="/my-account"><i className="fa fa-tachometer"></i> Dashboard</Link></li>
