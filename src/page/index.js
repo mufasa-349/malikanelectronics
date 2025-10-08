@@ -1,5 +1,5 @@
 import React from 'react'
-import Banner from '../component/BabyToys/Banner'
+import Slider from '../component/Common/Slider'
 import Category from '../component/BabyToys/Category'
 import TrendingProducts from '../component/BabyToys/TrendingProducts'
 import TopProducts from '../component/BabyToys/TopProducts'
@@ -12,7 +12,7 @@ const Home = () => {
     return (
         <>
             <Header />
-            <Banner />
+            <Slider />
             <Category />
             <TrendingProducts />
             <TopProducts />

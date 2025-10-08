@@ -1,10 +1,45 @@
 import React from 'react'
 import BabyHeading from '../Heading'
 import { Link } from 'react-router-dom'
-import { getMainCategories } from '../../../app/data/categoriesData'
+import { getProductsByCategory } from '../../../app/data/productsData'
 
 const Category = () => {
-    const categories = getMainCategories()
+    // Header'daki kategorilerle eşleştir
+    const categories = [
+        {
+            id: 1,
+            name: 'Bilgisayar Aksesuarları',
+            slug: 'bilgisayar-aksesuarlari',
+            icon: 'fas fa-laptop',
+            color: '#007bff'
+        },
+        {
+            id: 2,
+            name: 'Kamera & Fotoğraf',
+            slug: 'kamera-fotograf',
+            icon: 'fas fa-camera',
+            color: '#28a745'
+        },
+        {
+            id: 3,
+            name: 'Elektronik',
+            slug: 'elektronik',
+            icon: 'fas fa-microchip',
+            color: '#dc3545'
+        },
+        {
+            id: 4,
+            name: 'Genel',
+            slug: 'genel',
+            icon: 'fas fa-box',
+            color: '#ffc107'
+        }
+    ]
+
+    // Her kategori için ürün sayısını al
+    const getCategoryProductCount = (slug) => {
+        return getProductsByCategory(slug).length
+    }
     
     return (
         <>
@@ -13,15 +48,20 @@ const Category = () => {
                     <BabyHeading heading="Kategoriler" />
                     <div className="row">
                         {categories.map((category, index) => (
-                            <div className="col-lg-2 col-md-3 col-sm-4 col-6" key={category.id}>
+                            <div className="col-lg-3 col-md-4 col-sm-6 col-6" key={category.id}>
                                 <div className="baby_category_card">
-                                    <Link to={`/shop?category=${category.slug}`}>
+                                    <Link to={`/category/${category.slug}`}>
                                         <div className="baby_cat_img">
-                                            <img src={category.img} alt={category.name} />
+                                            <div 
+                                                className="category-icon"
+                                                style={{ backgroundColor: category.color }}
+                                            >
+                                                <i className={category.icon}></i>
+                                            </div>
                                         </div>
                                         <div className="baby_cat_content">
                                             <h5>{category.name}</h5>
-                                            <p>{category.itemCount} Ürün</p>
+                                            <p>{getCategoryProductCount(category.slug)} Ürün</p>
                                         </div>
                                     </Link>
                                 </div>

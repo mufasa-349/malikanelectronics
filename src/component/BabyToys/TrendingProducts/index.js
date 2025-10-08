@@ -1,116 +1,109 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import BabyHeading from '../Heading'
-import { BabyData } from '../Data'
+import { getProductsData } from '../../../app/data/productsData'
+import ProductCard from '../../Common/Product/ProductCard'
+
 const TrendingProducts = () => {
+    const [trendingProducts, setTrendingProducts] = useState([])
+    const [allAvailableProducts, setAllAvailableProducts] = useState([])
+    const [displayedCount, setDisplayedCount] = useState(12)
+    const [loading, setLoading] = useState(true)
+
+    useEffect(() => {
+        try {
+            // En çok yorumlanan 100 ürünü al
+            const allProducts = getProductsData()
+            console.log('Toplam ürün sayısı:', allProducts.length)
+            console.log('İlk ürün:', allProducts[0])
+            
+            if (!allProducts || allProducts.length === 0) {
+                console.log('Ürün bulunamadı!')
+                setLoading(false)
+                return
+            }
+            
+            // Yorum sayısına göre sırala (en yüksekten en düşüğe) - yeni array oluştur
+            const sortedByReviews = [...allProducts].sort((a, b) => (b.reviewCount || 0) - (a.reviewCount || 0))
+            
+            // En çok yorumlanan 100 ürünü al
+            const top100Products = sortedByReviews.slice(0, Math.min(100, allProducts.length))
+            
+            // Random karıştır
+            const shuffled = [...top100Products].sort(() => 0.5 - Math.random())
+            
+            console.log('Kullanılabilir ürün sayısı:', shuffled.length)
+            setAllAvailableProducts(shuffled)
+            
+            // İlk 12 ürünü göster
+            const initialProducts = shuffled.slice(0, Math.min(12, shuffled.length))
+            setTrendingProducts(initialProducts)
+            setLoading(false)
+        } catch (error) {
+            console.error('TrendingProducts hatası:', error)
+            setLoading(false)
+        }
+    }, [])
+
+    const loadMoreProducts = () => {
+        const newCount = displayedCount + 10
+        const newProducts = allAvailableProducts.slice(0, Math.min(newCount, allAvailableProducts.length))
+        setTrendingProducts(newProducts)
+        setDisplayedCount(newCount)
+    }
+
+    if (loading) {
+        return (
+            <section id="baby_trending_product" className="ptb-100">
+                <div className="container">
+                    <BabyHeading heading="Popüler Ürünler" />
+                    <div className="text-center">
+                        <div className="spinner-border text-primary" role="status">
+                            <span className="sr-only">Yükleniyor...</span>
+                        </div>
+                        <p className="mt-3">Ürünler yükleniyor...</p>
+                    </div>
+                </div>
+            </section>
+        )
+    }
+
     return (
         <>
             <section id="baby_trending_product" className="ptb-100">
                 <div className="container">
-                    <BabyHeading heading="Trending products" />
+                    <BabyHeading heading="Popüler Ürünler" />
                     <div className="row">
-                        <div className="col-lg-12">
-                            <div className="tabs_center_button">
-                                <ul className="nav nav-tabs" id="myTab" role="tablist">
-                                    <li role="presentation">
-                                        <a data-toggle="tab" href="#top_seller">TOP SELLER</a>
-                                    </li>
-                                    <li role="presentation">
-                                        <a data-toggle="tab" href="#new_arrival">NEW ARRIVAL</a>
-                                    </li>
-                                    <li role="presentation">
-                                        <a data-toggle="tab" href="#top_rated">TOP RATED</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div className="col-lg-12">
-                            <div className="tabs_el_wrapper">
-                                <div className="tab-content" id="myTabContent">
-                                    <div id="top_seller" className="tab-pane fade show in active" role="tabpanel">
-                                        <div className='row'>
-                                            {BabyData.map((data, index) => (
-                                                <div className="col-lg-3 col-md-4 col-sm-6 col-12" key={index}>
-                                                    <div className="jewellary_product_card">
-                                                        <div className="jewellary_product_img">
-                                                            <Link to="/product-details-one/1">
-                                                                <img src={data.img} alt="img" />
-                                                            </Link>
-                                                            <div className="jewellary_product_icon">
-                                                                <ul>
-                                                                    <li><a href="#!"><i className="fa fa-eye"></i></a></li>
-                                                                    <li><a href="#!"><i className="fa fa-shopping-cart"></i></a></li>
-                                                                    <li><a href="#!"><i className="fa fa-heart"></i></a></li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                        <div className="jewellary_product_text">
-                                                            <h3><Link to="/shop">{data.title}</Link></h3>
-                                                            <p>{data.des}</p>
-                                                            <h4>{data.price} <span><del>{data.oldprice}</del></span></h4>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
-                                    <div id="new_arrival" className="tab-pane fade" role="tabpanel">
-                                        <div className='row'>
-                                            {BabyData.slice(4, 8).map((data, index) => (
-                                                <div className="col-lg-3 col-md-4 col-sm-6 col-12" key={index}>
-                                                    <div className="jewellary_product_card">
-                                                        <div className="jewellary_product_img">
-                                                            <Link to="/product-details-one/1">
-                                                                <img src={data.img} alt="img" />
-                                                            </Link>
-                                                            <div className="jewellary_product_icon">
-                                                                <ul>
-                                                                    <li><a href="#!"><i className="fa fa-eye"></i></a></li>
-                                                                    <li><a href="#!"><i className="fa fa-shopping-cart"></i></a></li>
-                                                                    <li><a href="#!"><i className="fa fa-heart"></i></a></li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                        <div className="jewellary_product_text">
-                                                            <h3><Link to="/shop">{data.title}</Link></h3>
-                                                            <p>{data.des}</p>
-                                                            <h4>{data.price} <span><del>{data.oldprice}</del></span></h4>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
-                                    <div id="top_rated" className="tab-pane fade" role="tabpanel">
-                                        <div className='row'>
-                                            {BabyData.slice(4, 8).map((data, index) => (
-                                                <div className="col-lg-3 col-md-4 col-sm-6 col-12" key={index}>
-                                                    <div className="jewellary_product_card">
-                                                        <div className="jewellary_product_img">
-                                                            <Link to="/product-details-one/1">
-                                                                <img src={data.img} alt="img" />
-                                                            </Link>
-                                                            <div className="jewellary_product_icon">
-                                                                <ul>
-                                                                    <li><a href="#!"><i className="fa fa-eye"></i></a></li>
-                                                                    <li><a href="#!"><i className="fa fa-shopping-cart"></i></a></li>
-                                                                    <li><a href="#!"><i className="fa fa-heart"></i></a></li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                        <div className="jewellary_product_text">
-                                                            <h3><Link to="/shop">{data.title}</Link></h3>
-                                                            <p>{data.des}</p>
-                                                            <h4>{data.price} <span><del>{data.oldprice}</del></span></h4>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
+                        {trendingProducts.length > 0 ? (
+                            trendingProducts.map((product, index) => (
+                                <div className="col-lg-3 col-md-4 col-sm-6" key={product.id}>
+                                    <ProductCard data={product} />
                                 </div>
+                            ))
+                        ) : (
+                            <div className="col-12 text-center">
+                                <p>Henüz ürün bulunmuyor.</p>
                             </div>
-                        </div>
+                        )}
+                    </div>
+                    
+                    {/* Butonlar */}
+                    <div className="text-center mt-4">
+                        {displayedCount < allAvailableProducts.length && (
+                            <button 
+                                className="btn btn-outline-primary me-4"
+                                onClick={loadMoreProducts}
+                            >
+                                Daha Fazla Ürün Göster (+10)
+                            </button>
+                        )}
+                        
+                        <Link 
+                            to="/shop" 
+                            className="btn btn-primary"
+                        >
+                            Tüm Ürünleri Göster
+                        </Link>
                     </div>
                 </div>
             </section>
