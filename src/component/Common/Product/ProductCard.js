@@ -5,6 +5,7 @@ import { FaExchangeAlt } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { useDispatch } from "react-redux";
 import MyVerticallyCenteredModal from '../../Common/Modal';
+import { incrementWhatsAppClick } from '../../../utils/whatsappTracker';
 
 const ProductCard = (props) => {
     let dispatch = useDispatch();
@@ -20,6 +21,12 @@ const ProductCard = (props) => {
     const addToComp = async (id) => {
         dispatch({ type: "products/addToComp", payload: { id } })
     }
+
+    // WhatsApp tıklama sayısını artır
+    const handleWhatsAppClick = (productId) => {
+        incrementWhatsAppClick(productId);
+    }
+
     const [modalShow, setModalShow] = useState(false);
     return (
         <>
@@ -40,15 +47,16 @@ const ProductCard = (props) => {
                         <a href="#!" className="action compare" title="Compare" onClick={() => addToComp(props.data.id)}><FaExchangeAlt /></a>
                     </div>
                     <div className="product-actions">
-                            <a 
-                                href={`https://wa.me/905393973949?text=Merhaba, ${props.data.title} ürünü hakkında bilgi almak istiyorum. Ürün Kodu: ${props.data.productCode} - Fiyat: ₺${props.data.price.toLocaleString()}`} 
-                                target="_blank" 
-                                rel="noopener noreferrer"
-                                className="whatsapp-btn-small"
-                                title="WhatsApp ile İletişim"
-                            >
-                                <i className="fab fa-whatsapp" style={{fontSize: '16px', marginRight: '6px'}}></i>
-                            </a>
+                        <a 
+                            href={`https://wa.me/905393973949?text=Merhaba, ${props.data.title} ürünü hakkında bilgi almak istiyorum. Ürün Kodu: ${props.data.productCode} - Fiyat: ₺${props.data.price.toLocaleString()}`} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="whatsapp-btn-small"
+                            title="WhatsApp ile İletişim"
+                            onClick={() => handleWhatsAppClick(props.data.id)}
+                        >
+                            <i className="fab fa-whatsapp" style={{fontSize: '16px', marginRight: '6px'}}></i>
+                        </a>
                             <a 
                                 href="tel:+905393973949" 
                                 className="phone-btn-small"

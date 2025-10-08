@@ -138,6 +138,7 @@ fs.createReadStream('amazon_products.csv')
             inStock: true,
             rating: 4.0 + Math.random() * 1.0, // 4.0-5.0 arası rastgele
             reviewCount: Math.floor(Math.random() * 500) + 50, // 50-550 arası rastgele
+            whatsappClicks: 0, // WhatsApp tıklama sayısı
             specifications: {
                 "Genel": {
                     "Marka": row['Marka'] || 'Bilinmeyen',

@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom';
 import { RatingStar } from "rating-star";
 import Swal from 'sweetalert2';
 import { getProductById } from '../../../app/data/productsData';
+import { incrementWhatsAppClick } from '../../../utils/whatsappTracker';
 
 const ProductDetailsOne = () => {
     let dispatch = useDispatch();
@@ -49,6 +50,11 @@ const ProductDetailsOne = () => {
     // Add to Compare
     const addToComp = async (id) => {
         dispatch({ type: "products/addToComp", payload: { id } })
+    }
+
+    // WhatsApp tıklama sayısını artır
+    const handleWhatsAppClick = (productId) => {
+        incrementWhatsAppClick(productId);
     }
 
     // Color swatch fonksiyonu kaldırıldı - sadece ana görsel kullanıyoruz
@@ -212,6 +218,16 @@ const ProductDetailsOne = () => {
                                     <RatingStar maxScore={5} rating={product.rating} id="rating-star-common" />
                                     <span>({product.reviewCount} Müşteri Yorumu)</span>
                                 </div>
+                                
+                                {/* WhatsApp İlgi Sayısı - Sadece 3 ve üzeri olduğunda göster */}
+                                {(product.whatsappClicks || 0) >= 3 && (
+                                    <div className="whatsapp-interest">
+                                        <span className="interest-count">
+                                            <i className="fab fa-whatsapp" style={{color: '#25D366', marginRight: '5px'}}></i>
+                                            {product.whatsappClicks} kişi bu ürünle ilgilendi
+                                        </span>
+                                    </div>
+                                )}
                                 <div className="price-section">
                                     <h4 className="current-price">₺{product.price.toLocaleString()}</h4>
                                     <span className="original-price">Orijinal: ${product.originalPrice}</span>
@@ -224,6 +240,7 @@ const ProductDetailsOne = () => {
                                         target="_blank" 
                                         rel="noopener noreferrer"
                                         className="whatsapp-btn-price"
+                                        onClick={() => handleWhatsAppClick(product.id)}
                                     >
                                         <i className="fab fa-whatsapp" style={{fontSize: '18px', marginRight: '8px'}}></i>
                                         WhatsApp ile İletişim
@@ -291,6 +308,7 @@ const ProductDetailsOne = () => {
                                                 target="_blank" 
                                                 rel="noopener noreferrer"
                                                 className="whatsapp-btn"
+                                                onClick={() => handleWhatsAppClick(product.id)}
                                             >
                                                 <i className="fab fa-whatsapp" style={{fontSize: '18px', marginRight: '8px'}}></i>
                                                 WhatsApp ile İletişim

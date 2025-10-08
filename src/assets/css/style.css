@@ -535,6 +535,21 @@ button {
     object-position: center !important;
 }
 
+/* WhatsApp ilgi sayısı için stil */
+.whatsapp-interest {
+    margin: 10px 0;
+    padding: 8px 12px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    border-left: 3px solid #25D366;
+}
+
+.interest-count {
+    font-size: 14px;
+    color: #666;
+    font-weight: 500;
+}
+
 /* WhatsApp butonu için stil */
 .whatsapp-btn-header {
     display: flex;
