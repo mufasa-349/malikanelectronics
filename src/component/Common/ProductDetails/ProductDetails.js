@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom';
 import { RatingStar } from "rating-star";
 import Swal from 'sweetalert2';
 import { getProductById } from '../../../app/data/productsData';
-import { incrementWhatsAppClick } from '../../../utils/whatsappTracker';
+import { incrementWhatsAppClick, getProductWhatsAppClicks } from '../../../utils/whatsappTracker';
 
 const ProductDetailsOne = () => {
     let dispatch = useDispatch();
@@ -19,7 +19,13 @@ const ProductDetailsOne = () => {
     useEffect(() => {
         const productData = getProductById(id);
         if (productData) {
-            setProduct(productData);
+            // WhatsApp tıklama sayısını local storage'dan al
+            const whatsappClicks = getProductWhatsAppClicks(productData.id);
+            const updatedProduct = {
+                ...productData,
+                whatsappClicks: whatsappClicks
+            };
+            setProduct(updatedProduct);
             // Redux store'u da güncelle
             dispatch({ type: "products/getProductById", payload: { id } });
         }
@@ -54,7 +60,12 @@ const ProductDetailsOne = () => {
 
     // WhatsApp tıklama sayısını artır
     const handleWhatsAppClick = (productId) => {
-        incrementWhatsAppClick(productId);
+        const newCount = incrementWhatsAppClick(productId);
+        // Ürün state'ini güncelle
+        setProduct(prevProduct => ({
+            ...prevProduct,
+            whatsappClicks: newCount
+        }));
     }
 
     // Color swatch fonksiyonu kaldırıldı - sadece ana görsel kullanıyoruz
@@ -224,7 +235,7 @@ const ProductDetailsOne = () => {
                                     <div className="whatsapp-interest">
                                         <span className="interest-count">
                                             <i className="fab fa-whatsapp" style={{color: '#25D366', marginRight: '5px'}}></i>
-                                            {product.whatsappClicks} kişi bu ürünle ilgilendi
+                                            {product.whatsappClicks >= 10 ? `${product.whatsappClicks}+` : product.whatsappClicks} kişi bu ürünle ilgilendi
                                         </span>
                                     </div>
                                 )}
