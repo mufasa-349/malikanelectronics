@@ -507,6 +507,34 @@ button {
     height: 24px;
 }
 
+/* Grid yapısı için sabit görsel boyutları */
+.product_wrappers_one .thumb .image,
+.product_item_two .product_item_inner,
+.product_img,
+.pharmacy_product_img {
+    height: 250px !important;
+    width: 100% !important;
+    overflow: hidden !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background-color: #ffffff !important;
+    border: 1px solid #e9ecef !important;
+    padding: 10px !important;
+}
+
+.product_wrappers_one .thumb .image img,
+.product_item_two .product_item_inner img,
+.product_img img,
+.pharmacy_product_img a img {
+    max-height: 100% !important;
+    max-width: 100% !important;
+    width: auto !important;
+    height: auto !important;
+    object-fit: contain !important;
+    object-position: center !important;
+}
+
 /* WhatsApp butonu için stil */
 .whatsapp-btn-header {
     display: flex;
@@ -2288,6 +2316,8 @@ button {
     position: relative;
     display: block;
     overflow: hidden;
+    height: 250px;
+    width: 100%;
 }
 
 .product_wrappers_one .thumb .image img {
@@ -2295,14 +2325,26 @@ button {
     max-width: 100%;
     transition: all 0.3s ease 0s;
     width: 100%;
+    height: 250px;
+    object-fit: cover;
+    object-position: center;
 }
 
 .product_wrappers_one .thumb .image img.hover-image {
     position: absolute;
     z-index: 2;
-    top: 0;
-    left: 0;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    max-height: calc(100% - 20px);
+    max-width: calc(100% - 20px);
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    object-position: center;
     opacity: 0;
+    margin: auto;
 }
 
 .product_wrappers_one .thumb .badges {
@@ -6388,10 +6430,14 @@ table {
     position: relative;
     margin-bottom: 10px;
     overflow: hidden;
+    height: 250px;
 }
 
 .product_item_two.product_item_inner img {
     width: 100%;
+    height: 250px;
+    object-fit: cover;
+    object-position: center;
 }
 
 .product_item_two .product_button {
@@ -6466,6 +6512,8 @@ table {
 .product_img {
     position: relative;
     overflow: hidden;
+    height: 250px;
+    width: 100%;
 }
 
 .product_img::before {
@@ -6486,6 +6534,10 @@ table {
     -webkit-transition: all 0.3s ease-in-out;
     -ms-transition: all 0.3s ease-in-out;
     transition: all 0.3s ease-in-out;
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    object-position: center;
 }
 
 .product_action_box {
@@ -8234,10 +8286,15 @@ table {
 
 .pharmacy_product_img {
     position: relative;
+    height: 250px;
+    overflow: hidden;
 }
 
 .pharmacy_product_img a img {
     width: 100%;
+    height: 250px;
+    object-fit: cover;
+    object-position: center;
 }
 
 .pharmacy_product_img .batch {
