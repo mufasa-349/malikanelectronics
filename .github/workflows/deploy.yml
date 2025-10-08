@@ -24,7 +24,7 @@ jobs:
       run: npm ci --legacy-peer-deps
       
     - name: Build
-      run: NODE_OPTIONS=--openssl-legacy-provider npm run build
+      run: NODE_OPTIONS=--openssl-legacy-provider CI=false npm run build
       
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
