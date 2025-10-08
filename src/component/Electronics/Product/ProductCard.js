@@ -32,7 +32,10 @@ const ProductCard = (props) => {
                     <h5 className="product_title">
                         <Link to={`/product-details-two/${props.data.id}`}>{props.data.title}</Link>
                     </h5>
-                    <p className="item_price">${props.data.price}.00</p>
+                    <p className="item_price">
+                        <span className="new">₺{props.data.price.toLocaleString()}</span>
+                        <span className="old">₺{(props.data.price + 2499).toLocaleString()}</span>
+                    </p>
                 </div>
             </div>
 

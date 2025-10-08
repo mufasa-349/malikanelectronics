@@ -1268,6 +1268,24 @@ button {
     /* Logo height büyütüldü */
 }
 
+/* Fiyat bilgi yazısı */
+.price-info {
+    background-color: #f8f9fa;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border-left: 3px solid #28a745;
+}
+
+.price-info small {
+    color: #6c757d !important;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.price-info i {
+    color: #28a745;
+}
+
 .mobile-header {
     padding: 15px 0;
 }

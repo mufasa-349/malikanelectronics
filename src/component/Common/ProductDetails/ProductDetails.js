@@ -227,7 +227,7 @@ const ProductDetailsOne = () => {
                                     </div>
                                 <div className="reviews_rating">
                                     <RatingStar maxScore={5} rating={product.rating} id="rating-star-common" />
-                                    <span>({product.reviewCount} Müşteri Yorumu)</span>
+                                    <span>({product.reviewCount} Müşteri Değerlendirmesi)</span>
                                 </div>
                                 
                                 {/* WhatsApp İlgi Sayısı - Sadece 3 ve üzeri olduğunda göster */}
@@ -241,7 +241,13 @@ const ProductDetailsOne = () => {
                                 )}
                                 <div className="price-section">
                                     <h4 className="current-price">₺{product.price.toLocaleString()}</h4>
-                                    <span className="original-price">Orijinal: ${product.originalPrice}</span>
+                                    <span className="original-price">Orijinal: ₺{(product.price + 2499).toLocaleString()}</span>
+                                    <div className="price-info mt-2">
+                                        <small className="text-muted">
+                                            <i className="fa fa-info-circle" style={{marginRight: '5px'}}></i>
+                                            Fiyatlarımıza KDV dahildir ve ürünlerimiz faturalıdır
+                                        </small>
+                                    </div>
                                 </div>
                                 
                                 {/* WhatsApp ve Telefon İletişim Butonları - Fiyatın hemen altında */}
@@ -264,15 +270,6 @@ const ProductDetailsOne = () => {
                                         Telefon Et
                                     </a>
                                 </div>
-                                    <div className="customs_selects">
-                                        <select name="product" className="customs_sel_box">
-                                            <option value="volvo">Size</option>
-                                            <option value="xl">XL</option>
-                                            <option value="small">S</option>
-                                            <option value="medium">M</option>
-                                            <option value="learz">L</option>
-                                        </select>
-                                    </div>
                                     {/* Color seçimi kaldırıldı - sadece ana görsel kullanıyoruz */}
                                     <form id="product_count_form_two">
                                         <div className="product_count_one">
@@ -301,16 +298,6 @@ const ProductDetailsOne = () => {
                                     </div>
                                     
                                     <div className="links_Product_areas">
-                                        <ul>
-                                            <li>
-                                                <a href="#!" className="action wishlist" title="Wishlist" onClick={() => addToFav(product.id)}><i
-                                                    className="fa fa-heart"></i>Favorilere Ekle</a>
-                                            </li>
-                                            <li>
-                                                <a href="#!" className="action compare" onClick={() => addToComp(product.id)} title="Compare"><i
-                                                    className="fa fa-exchange"></i>Karşılaştır</a>
-                                            </li>
-                                        </ul>
                                         
                                         {/* WhatsApp ve Telefon İletişim Butonları */}
                                         <div className="contact-buttons">

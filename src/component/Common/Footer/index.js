@@ -15,10 +15,10 @@ const FooterData = [
     {
         title: "KATEGORİLER",
         links: [
-            { linkTitle: "Elektronik", link: "/category/elektronik" },
-            { linkTitle: "Bilgisayar Aksesuarları", link: "/category/bilgisayar-aksesuarlari" },
-            { linkTitle: "Kamera & Fotoğraf", link: "/category/kamera-fotograf" },
-            { linkTitle: "Genel", link: "/category/genel" }
+            { linkTitle: "ELEKTRONİK", link: "/category/elektronik" },
+            { linkTitle: "BİLGİSAYAR AKSESUARLARI", link: "/category/bilgisayar-aksesuarlari" },
+            { linkTitle: "KAMERA & FOTOĞRAF", link: "/category/kamera-fotograf" },
+            { linkTitle: "GENEL", link: "/category/genel" }
         ]
     }
 ]

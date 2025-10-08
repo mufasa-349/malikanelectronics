@@ -38,8 +38,8 @@ const ProductCard = (props) => {
                 <div className="product_info">
                     <h5 className="product_title"><Link to={`/product-details-one/${props.data.id}`}>{props.data.title}</Link></h5>
                     <div className="product_price">
-                        <span className="price">${props.data.price}.00</span>
-                        <del>${parseInt(props.data.price) + 17}.00</del>
+                        <span className="price">₺{props.data.price.toLocaleString()}</span>
+                        <del>₺{(props.data.price + 2499).toLocaleString()}</del>
                     </div>
                     <div className="rating_wrap">
                         <div className="rating">

@@ -1,22 +1,22 @@
 export const MenuData = [
     {
-        name: "Bilgisayar Aksesuarları",
+        name: "BİLGİSAYAR AKSESUARLARI",
         href: "/category/bilgisayar-aksesuarlari"
     },
     {
-        name: "Kamera & Fotoğraf",
+        name: "KAMERA & FOTOĞRAF",
         href: "/category/kamera-fotograf"
     },
     {
-        name: "Elektronik",
+        name: "ELEKTRONİK",
         href: "/category/elektronik"
     },
     {
-        name: "Genel",
+        name: "GENEL",
         href: "/category/genel"
     },
     {
-        name: "Tüm Ürünler",
+        name: "TÜM ÜRÜNLER",
         href: "/shop"
     }
 ]
