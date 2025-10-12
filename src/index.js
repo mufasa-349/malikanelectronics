@@ -8,7 +8,10 @@ import App from './App';
 import { store } from './app/store';
 import { Provider } from 'react-redux';
 
-// import Custom Css
+// import Bootstrap CSS first
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+// import Custom Css - Bootstrap'ten sonra yüklensin
 import "./assets/css/style.css"
 import "./assets/css/color.css"
 import "./assets/css/responsive.css"
