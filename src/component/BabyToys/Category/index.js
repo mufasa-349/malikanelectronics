@@ -1,11 +1,18 @@
 import React from 'react'
 import BabyHeading from '../Heading'
 import { Link } from 'react-router-dom'
-import { getProductsByCategory } from '../../../app/data/productsData'
+import { getProductsByCategory, getProductsData } from '../../../app/data/productsData'
 
 const Category = () => {
     // Header'daki kategorilerle eşleştir
     const categories = [
+        {
+            id: 0,
+            name: 'Tüm Ürünler',
+            slug: 'tum-urunler',
+            icon: 'fas fa-th-large',
+            color: '#6f42c1'
+        },
         {
             id: 1,
             name: 'Bilgisayar Aksesuarları',
@@ -26,18 +33,14 @@ const Category = () => {
             slug: 'elektronik',
             icon: 'fas fa-microchip',
             color: '#dc3545'
-        },
-        {
-            id: 4,
-            name: 'Genel',
-            slug: 'genel',
-            icon: 'fas fa-box',
-            color: '#ffc107'
         }
     ]
 
     // Her kategori için ürün sayısını al
     const getCategoryProductCount = (slug) => {
+        if (slug === 'tum-urunler') {
+            return getProductsData().length
+        }
         return getProductsByCategory(slug).length
     }
     

@@ -4,7 +4,7 @@ import Header from '../Header'
 import Footer from '../Footer'
 import ProductCard from '../Product/ProductCard'
 import Filter from '../../Shop/Filter'
-import { getProductsByCategory } from '../../../app/data/productsData'
+import { getProductsByCategory, getProductsData } from '../../../app/data/productsData'
 
 const CategoryPage = () => {
     const { categorySlug } = useParams()
@@ -18,6 +18,7 @@ const CategoryPage = () => {
     // Kategori slug'ından kategori adını çevir
     const getCategoryName = (slug) => {
         const categoryMap = {
+            'tum-urunler': 'Tüm Ürünler',
             'bilgisayar-aksesuarlari': 'Bilgisayar Aksesuarları',
             'kamera-fotograf': 'Kamera & Fotoğraf',
             'arac-elektronik': 'Araç Elektronik',
@@ -85,7 +86,14 @@ const CategoryPage = () => {
         const fetchProducts = async () => {
             setLoading(true)
             try {
-                const categoryProducts = getProductsByCategory(categorySlug)
+                let categoryProducts
+                if (categorySlug === 'tum-urunler') {
+                    // Tüm ürünleri getir
+                    categoryProducts = getProductsData()
+                } else {
+                    // Belirli kategori ürünlerini getir
+                    categoryProducts = getProductsByCategory(categorySlug)
+                }
                 setProducts(categoryProducts)
                 setFilteredProducts(categoryProducts)
                 setCategoryName(getCategoryName(categorySlug))
