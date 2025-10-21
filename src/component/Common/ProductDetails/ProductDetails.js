@@ -249,6 +249,30 @@ const ProductDetailsOne = () => {
                                             <i className="fa fa-info-circle" style={{marginRight: '5px'}}></i>
                                             Fiyatlarımıza KDV dahildir ve ürünlerimiz faturalıdır
                                         </small>
+                                        <div className="delivery-payment-info mt-2">
+                                            <div className="delivery-info mb-3">
+                                                <div className="alert alert-success py-2 px-3 mb-0" style={{fontSize: '0.9rem'}}>
+                                                    <i className="fa fa-truck" style={{marginRight: '8px', fontSize: '1.1rem'}}></i>
+                                                    <strong>Tahmini Teslim Tarihi:</strong> {new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toLocaleDateString('tr-TR', { 
+                                                        day: '2-digit', 
+                                                        month: '2-digit', 
+                                                        year: 'numeric' 
+                                                    })}
+                                                </div>
+                                            </div>
+                                            <div className="payment-info mb-3">
+                                                <div className="alert alert-info py-2 px-3 mb-0" style={{fontSize: '0.9rem'}}>
+                                                    <i className="fa fa-credit-card" style={{marginRight: '8px', fontSize: '1.1rem'}}></i>
+                                                    <strong>Ödeme:</strong> Ürün tesliminde ödemenizi tüm kredi/banka kartlarıyla ya da nakit yapabilirsiniz.
+                                                </div>
+                                            </div>
+                                            <div className="return-info">
+                                                <small className="text-muted" style={{fontSize: '0.8rem'}}>
+                                                    <i className="fa fa-undo" style={{marginRight: '5px'}}></i>
+                                                    İade Süresi: 30 gün
+                                                </small>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 
