@@ -67,7 +67,7 @@ const ContactOne = loadable(() => pMinDelay(import('./page/contact'), 250), { fa
 const ContactTwo = loadable(() => pMinDelay(import('./page/contact/contact-two'), 250), { fallback: <Loading /> });
 const Contact = loadable(() => pMinDelay(import('./page/contact'), 250), { fallback: <Loading /> });
 const ScrollToTop = loadable(() => pMinDelay(import('./component/Common/ScrollToTop'), 250), { fallback: <Loading /> });
-const Fashion = loadable(() => pMinDelay(import('./page/'), 250), { fallback: <Loading /> });
+const Fashion = loadable(() => pMinDelay(import('./page/index'), 250), { fallback: <Loading /> });
 
 const App = () => {
   return (
