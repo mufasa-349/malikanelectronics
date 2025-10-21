@@ -241,7 +241,9 @@ const ProductDetailsOne = () => {
                                 )}
                                 <div className="price-section">
                                     <h4 className="current-price">₺{product.price.toLocaleString()}</h4>
-                                    <span className="original-price">Orijinal: ₺{(product.price + 2499).toLocaleString()}</span>
+                                    {product.originalPrice && product.originalPrice !== product.price && (
+                                        <span className="original-price">Orijinal: ₺{product.originalPrice.toLocaleString()}</span>
+                                    )}
                                     <div className="price-info mt-2">
                                         <small className="text-muted">
                                             <i className="fa fa-info-circle" style={{marginRight: '5px'}}></i>

@@ -19,7 +19,11 @@ const CardPharmacy = (props) => {
                     </div>
                     <div className="pharmacy_product_text">
                         <h3>{props.data.title}</h3>
-                        <p>₺{props.data.price.toLocaleString()} <del>₺{(props.data.price + 2499).toLocaleString()}</del></p>
+                        <p>₺{props.data.price.toLocaleString()} 
+                            {props.data.originalPrice && props.data.originalPrice !== props.data.price && (
+                                <del>₺{props.data.originalPrice.toLocaleString()}</del>
+                            )}
+                        </p>
                     </div>
                 </div>
             </div>

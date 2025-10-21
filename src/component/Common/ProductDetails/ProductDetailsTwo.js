@@ -99,7 +99,11 @@ const ProductDetailsTwo = () => {
                                         <RatingStar maxScore={5} rating={product.rating.rate} id="rating-star-common-2" />
                                         <span>({product.rating.count} Müşteri Değerlendirmesi)</span>
                                     </div>
-                                    <h4>${product.price}.00 <del>${parseInt(product.price) + 17}.00</del> </h4>
+                                    <h4>₺{product.price.toLocaleString()} 
+                                        {product.originalPrice && product.originalPrice !== product.price && (
+                                            <del>₺{product.originalPrice.toLocaleString()}</del>
+                                        )}
+                                    </h4>
                                     <p>{product.description}</p>
                                     <div className="customs_selects">
                                         <select name="product" className="customs_sel_box">

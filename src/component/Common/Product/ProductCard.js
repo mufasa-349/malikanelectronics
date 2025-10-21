@@ -67,7 +67,9 @@ const ProductCard = (props) => {
                     </div>
                     <span className="price">
                         <span className="new">₺{props.data.price.toLocaleString()}</span>
-                        <span className="old">₺{(props.data.price + 2499).toLocaleString()}</span>
+                        {props.data.originalPrice && props.data.originalPrice !== props.data.price && (
+                            <span className="old">₺{props.data.originalPrice.toLocaleString()}</span>
+                        )}
                     </span>
                 </div>
             </div>

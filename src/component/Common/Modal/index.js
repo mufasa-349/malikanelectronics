@@ -53,7 +53,11 @@ const MyVerticallyCenteredModal = (props) => {
                                                 <RatingStar maxScore={5} rating={props.data.rating.rate} id="rating-star-modal" />
                                                 <span>({props.data.rating.count} Müşteri Değerlendirmesi)</span>
                                             </div>
-                                            <h4>₺{props.data.price.toLocaleString()} <del style={{fontWeight: 400, color: 'gray'}}>₺{(props.data.price + 2499).toLocaleString()}</del> </h4>
+                                            <h4>₺{props.data.price.toLocaleString()} 
+                                                {props.data.originalPrice && props.data.originalPrice !== props.data.price && (
+                                                    <del style={{fontWeight: 400, color: 'gray'}}>₺{props.data.originalPrice.toLocaleString()}</del>
+                                                )}
+                                            </h4>
                                             <p>{props.data.description}</p>
                                             <div className="variable-single-item">
                                                 <span>Color</span>
