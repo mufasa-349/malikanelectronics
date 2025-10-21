@@ -4,7 +4,7 @@ const Loader = () => {
     return (
         <>
             <div className="loader_wrapper">
-                <img width="200px" src="/malikane-publish/malikane-electronics-logo-tek.png" alt="loader" />
+                <img width="200px" src="/malikane-electronics-logo-tek.png" alt="loader" />
             </div>
         </>
     )
