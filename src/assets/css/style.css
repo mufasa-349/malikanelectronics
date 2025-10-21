@@ -554,7 +554,7 @@ button {
 /* Hero Slider Stilleri */
 .hero-slider {
     position: relative;
-    height: 800px;
+    height: 400px;
     overflow: hidden;
     margin-bottom: 60px;
 }
@@ -581,6 +581,9 @@ button {
     transition: opacity 0.5s ease-in-out;
     display: flex;
     align-items: center;
+    background-size: cover !important;
+    background-position: center center !important;
+    background-repeat: no-repeat !important;
 }
 
 .slide.active {

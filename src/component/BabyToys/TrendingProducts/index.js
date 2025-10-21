@@ -46,7 +46,7 @@ const TrendingProducts = () => {
     }, [])
 
     const loadMoreProducts = () => {
-        const newCount = displayedCount + 10
+        const newCount = displayedCount + 12
         const newProducts = allAvailableProducts.slice(0, Math.min(newCount, allAvailableProducts.length))
         setTrendingProducts(newProducts)
         setDisplayedCount(newCount)
@@ -94,7 +94,7 @@ const TrendingProducts = () => {
                                 className="btn btn-outline-primary me-4"
                                 onClick={loadMoreProducts}
                             >
-                                Daha Fazla Ürün Göster (+10)
+                                Daha Fazla Ürün Göster
                             </button>
                         )}
                         
