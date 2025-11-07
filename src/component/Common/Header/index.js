@@ -51,7 +51,8 @@ const Header = () => {
         setClick(!click);
     }
 
-    const handleSearch = () => {
+    const handleSearch = (e) => {
+        e.preventDefault();
         if (click) {
             document.querySelector("#search").style = ("transform: translate(-100%, 0); opacity: 0")
         } else {
@@ -67,7 +68,8 @@ const Header = () => {
         }
         setClick(!click);
     }
-    const handlemenu = () => {
+    const handlemenu = (e) => {
+        e.preventDefault();
         if (click) {
             document.querySelector("#mobile-menu-offcanvas").style = ("transform: translateX(100%);")
         } else {
@@ -153,9 +155,9 @@ const Header = () => {
                         </div>
 
                         <div className="mobile-actions">
-                            <a href="#!" className="search-btn" onClick={handleSearch}>
+                            <button type="button" className="search-btn" onClick={handleSearch}>
                                 <i className="fa fa-search"></i>
-                            </a>
+                            </button>
                             <a 
                                 href="https://wa.me/905393973949?text=Merhaba, Malikane Electronics ürünleriniz hakkında bilgi almak istiyorum." 
                                 target="_blank" 
@@ -165,9 +167,9 @@ const Header = () => {
                             >
                                 <i className="fab fa-whatsapp"></i>
                             </a>
-                            <a href="#!" className="menu-btn" onClick={handlemenu}>
+                            <button type="button" className="menu-btn" onClick={handlemenu}>
                                 <i className="fa fa-bars"></i>
-                            </a>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -187,11 +189,80 @@ const Header = () => {
                                 <li>
                                     <Link to="/"><span>Ana Sayfa</span></Link>
                                 </li>
-                                {MenuData.map((item, index) => (
-                                    <li key={index}>
-                                        <Link to={item.href}><span>{item.name}</span></Link>
-                                    </li>
-                                ))}
+                                {MenuData.map((item, index) => {
+                                    // Kategoriler için accordion yapısı
+                                    if (item.name === "KATEGORİLER" && item.children) {
+                                        return (
+                                            <li key={index} className={show === `menu-${index}` ? 'active' : ''}>
+                                                <button 
+                                                    type="button"
+                                                    className="offcanvas-menu-expand"
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        handleShow(`menu-${index}`);
+                                                    }}
+                                                >
+                                                    <span>{item.name}</span>
+                                                </button>
+                                                <ul className="sub-menu mobile-category-menu">
+                                                    {item.children.map((category, catIndex) => (
+                                                        <li 
+                                                            key={catIndex}
+                                                            className={show === `submenu-${index}-${catIndex}` ? 'active' : ''}
+                                                        >
+                                                            {category.children && category.children.length > 0 ? (
+                                                                <>
+                                                                    <button 
+                                                                        type="button"
+                                                                        className="offcanvas-menu-expand"
+                                                                        onClick={(e) => {
+                                                                            e.preventDefault();
+                                                                            handleShow(`submenu-${index}-${catIndex}`);
+                                                                        }}
+                                                                    >
+                                                                        <span>
+                                                                            <i className="fa fa-folder-open"></i>
+                                                                            {category.name}
+                                                                        </span>
+                                                                    </button>
+                                                                    <ul className="sub-menu mobile-subcategory-menu">
+                                                                        <li>
+                                                                            <Link to={category.href}>
+                                                                                <i className="fa fa-arrow-right"></i>
+                                                                                Tümünü Gör
+                                                                            </Link>
+                                                                        </li>
+                                                                        {category.children.map((subCategory, subIndex) => (
+                                                                            <li key={subIndex}>
+                                                                                <Link to={subCategory.href}>
+                                                                                    <i className="fa fa-angle-right"></i>
+                                                                                    {subCategory.name}
+                                                                                </Link>
+                                                                            </li>
+                                                                        ))}
+                                                                    </ul>
+                                                                </>
+                                                            ) : (
+                                                                <Link to={category.href}>
+                                                                    <span>
+                                                                        <i className="fa fa-folder-open"></i>
+                                                                        {category.name}
+                                                                    </span>
+                                                                </Link>
+                                                            )}
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            </li>
+                                        );
+                                    }
+                                    // Diğer menü öğeleri
+                                    return (
+                                        <li key={index}>
+                                            <Link to={item.href || "#!"}><span>{item.name}</span></Link>
+                                        </li>
+                                    );
+                                })}
                                 <li>
                                     <Link to="/contact"><span>İletişim</span></Link>
                                 </li>

@@ -25,7 +25,7 @@ const ProductCard = (props) => {
             <div className="product_box text-center">
                 <div className="product_img">
                     <Link to={`/product-details-one/${props.data.id}`}>
-                        <img src={props.data.mainImage || props.data.images?.[0] || props.data.img} alt="furniture_img1" />
+                        <img src={props.data.image || props.data.img || props.data.mainImage || props.data.images?.[0]} alt="furniture_img1" />
                     </Link>
                     <div className="product_action_box">
                         <ul className="list_none pr_action_btn">

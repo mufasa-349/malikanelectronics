@@ -32,9 +32,13 @@ const ProductDetailsOne = () => {
         setLoading(false);
     }, [id, dispatch]);
     
-    // Product yüklendiğinde ana görseli ata
+    // Product yüklendiğinde ana görseli ata - image attribute'unu öncelikli kullan
     useEffect(() => {
-        if (product?.mainImage) {
+        if (product?.image) {
+            setImg(product.image);
+        } else if (product?.img) {
+            setImg(product.img);
+        } else if (product?.mainImage) {
             setImg(product.mainImage);
         } else if (product?.images?.length) {
             setImg(product.images[0]);

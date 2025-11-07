@@ -9,9 +9,9 @@ const productsSlice = createSlice({
     name: 'products',
     initialState: {
         products: getProductsData(),
-        carts: getProductsData().slice(0,2),
-        favorites: getProductsData().slice(2,4),
-        compare: getProductsData().slice(0,2),
+        carts: [],
+        favorites: [],
+        compare: [],
         single:null,
     },
     reducers: {

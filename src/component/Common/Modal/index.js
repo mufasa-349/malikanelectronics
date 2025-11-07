@@ -43,7 +43,7 @@ const MyVerticallyCenteredModal = (props) => {
                                 <div className="row">
                                     <div className="col-lg-5 col-md-6 col-sm-12 col-12">
                                         <div className="products_modal_sliders">
-                                            <img src={props.data.mainImage || props.data.images?.[0] || props.data.img} alt="img" />
+                                            <img src={props.data.image || props.data.img || props.data.mainImage || props.data.images?.[0]} alt="img" />
                                         </div>
                                     </div>
                                     <div className="col-lg-7 col-md-6 col-sm-12 col-12">

@@ -1,9 +1,18 @@
 import React from 'react'
-import { Redirect } from 'react-router-dom'
+import Header from '../component/Common/Header'
+import Banner from '../component/Common/Banner'
+import RegisterArea from '../component/Register'
+import Footer from '../component/Common/Footer'
 
 const Register = () => {
-    // Register sayfasını iletişim sayfasına yönlendir
-    return <Redirect to="/login" />
+    return (
+        <>
+            <Header />
+            <Banner title="Kayıt Ol" />
+            <RegisterArea />
+            <Footer />
+        </>
+    )
 }
 
 export default Register

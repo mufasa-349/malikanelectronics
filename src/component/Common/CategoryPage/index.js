@@ -1,33 +1,46 @@
-import React, { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import React, { useState, useEffect, useCallback } from 'react'
+import { useParams, useLocation } from 'react-router-dom'
 import Header from '../Header'
 import Footer from '../Footer'
 import ProductCard from '../Product/ProductCard'
 import Filter from '../../Shop/Filter'
-import { getProductsByCategory, getProductsData } from '../../../app/data/productsData'
+import { getProductsByCategory, getProductsData, getCategoryTree } from '../../../app/data/productsData'
 
 const CategoryPage = () => {
     const { categorySlug } = useParams()
+    const location = useLocation()
     const [products, setProducts] = useState([])
     const [filteredProducts, setFilteredProducts] = useState([])
+    const [displayedProducts, setDisplayedProducts] = useState([])
     const [loading, setLoading] = useState(true)
+    const [loadingMore, setLoadingMore] = useState(false)
     const [categoryName, setCategoryName] = useState('')
+    const [subcategories, setSubcategories] = useState([])
+    const [selectedSubcategory, setSelectedSubcategory] = useState(null)
     const [sortBy, setSortBy] = useState('popularity')
     const [filterBy, setFilterBy] = useState('most-popular')
+    const [itemsPerPage] = useState(50)
+    const [currentPage, setCurrentPage] = useState(1)
 
-    // Kategori slug'ından kategori adını çevir
+    // Kategori slug'ından kategori adını bul
     const getCategoryName = (slug) => {
-        const categoryMap = {
-            'tum-urunler': 'Tüm Ürünler',
-            'bilgisayar-aksesuarlari': 'Bilgisayar Aksesuarları',
-            'kamera-fotograf': 'Kamera & Fotoğraf',
-            'arac-elektronik': 'Araç Elektronik',
-            'elektronik': 'Elektronik',
-            'ses-ve-muzik': 'Ses & Müzik',
-            'spor-acik-hava': 'Spor & Açık Hava',
-            'genel': 'Genel'
+        if (slug === 'tum-urunler' || slug === 'all') {
+            return 'Tüm Ürünler'
         }
-        return categoryMap[slug] || slug
+        
+        const categoryTree = getCategoryTree()
+        for (const [mainCat, data] of Object.entries(categoryTree)) {
+            if (data.slug === slug) {
+                return mainCat
+            }
+            // Alt kategorileri kontrol et
+            for (const [subCat, subData] of Object.entries(data.subcategories)) {
+                if (subData.slug === slug) {
+                    return subCat
+                }
+            }
+        }
+        return slug
     }
 
     // Sıralama fonksiyonları
@@ -73,6 +86,8 @@ const CategoryPage = () => {
         setSortBy(sortType)
         const sorted = sortProducts(products, sortType)
         setFilteredProducts(sorted)
+        setCurrentPage(1)
+        setDisplayedProducts(sorted.slice(0, itemsPerPage))
     }
 
     // Filtre değiştiğinde
@@ -80,23 +95,108 @@ const CategoryPage = () => {
         setFilterBy(filterType)
         const filtered = filterProducts(products, filterType)
         setFilteredProducts(filtered)
+        setCurrentPage(1)
+        setDisplayedProducts(filtered.slice(0, itemsPerPage))
     }
+    
+    // Infinite scroll için daha fazla ürün yükle
+    const loadMoreProducts = useCallback(() => {
+        if (loadingMore || displayedProducts.length >= filteredProducts.length) {
+            return
+        }
+        
+        setLoadingMore(true)
+        setTimeout(() => {
+            setCurrentPage(prevPage => {
+                const nextPage = prevPage + 1
+                const startIndex = prevPage * itemsPerPage
+                const endIndex = startIndex + itemsPerPage
+                const newProducts = filteredProducts.slice(startIndex, endIndex)
+                
+                setDisplayedProducts(prev => [...prev, ...newProducts])
+                setLoadingMore(false)
+                return nextPage
+            })
+        }, 300)
+    }, [loadingMore, displayedProducts.length, filteredProducts, itemsPerPage])
+    
+    // Scroll event listener
+    useEffect(() => {
+        const handleScroll = () => {
+            if (loadingMore || displayedProducts.length >= filteredProducts.length) {
+                return
+            }
+            
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop
+            const windowHeight = window.innerHeight
+            const documentHeight = document.documentElement.scrollHeight
+            
+            // Sayfa sonuna 200px kala yükle
+            if (scrollTop + windowHeight >= documentHeight - 200) {
+                loadMoreProducts()
+            }
+        }
+        
+        window.addEventListener('scroll', handleScroll)
+        return () => window.removeEventListener('scroll', handleScroll)
+    }, [displayedProducts.length, filteredProducts.length, loadingMore, loadMoreProducts])
 
     useEffect(() => {
         const fetchProducts = async () => {
             setLoading(true)
             try {
+                const urlParams = new URLSearchParams(location.search)
+                const subcategoryParam = urlParams.get('subcategory')
+                
                 let categoryProducts
-                if (categorySlug === 'tum-urunler') {
+                let foundSubcategories = []
+                
+                if (categorySlug === 'tum-urunler' || categorySlug === 'all') {
                     // Tüm ürünleri getir
                     categoryProducts = getProductsData()
+                    setCategoryName('Tüm Ürünler')
                 } else {
                     // Belirli kategori ürünlerini getir
                     categoryProducts = getProductsByCategory(categorySlug)
+                    setCategoryName(getCategoryName(categorySlug))
+                    
+                    // Kategori ağacından alt kategorileri bul
+                    const categoryTree = getCategoryTree()
+                    for (const [mainCat, data] of Object.entries(categoryTree)) {
+                        if (data.slug === categorySlug) {
+                            foundSubcategories = Object.keys(data.subcategories).map(subCat => ({
+                                name: subCat,
+                                slug: data.subcategories[subCat].slug,
+                                fullPaths: data.subcategories[subCat].full_paths
+                            }))
+                            break
+                        }
+                    }
+                    
+                    // Alt kategori seçilmişse filtrele
+                    if (subcategoryParam && foundSubcategories.length > 0) {
+                        const subcat = foundSubcategories.find(s => s.slug === subcategoryParam)
+                        if (subcat) {
+                            setSelectedSubcategory(subcat)
+                            const filtered = categoryProducts.filter(product => {
+                                const productCategory = product.category || ''
+                                return subcat.fullPaths.includes(productCategory)
+                            })
+                            setFilteredProducts(filtered)
+                            setDisplayedProducts(filtered.slice(0, itemsPerPage))
+                        } else {
+                            setFilteredProducts(categoryProducts)
+                            setDisplayedProducts(categoryProducts.slice(0, itemsPerPage))
+                        }
+                    } else {
+                        setFilteredProducts(categoryProducts)
+                        setDisplayedProducts(categoryProducts.slice(0, itemsPerPage))
+                    }
                 }
+                
                 setProducts(categoryProducts)
-                setFilteredProducts(categoryProducts)
-                setCategoryName(getCategoryName(categorySlug))
+                setSubcategories(foundSubcategories)
+                setCurrentPage(1)
             } catch (error) {
                 console.error('Ürünler yüklenirken hata:', error)
                 setProducts([])
@@ -106,7 +206,21 @@ const CategoryPage = () => {
         }
 
         fetchProducts()
-    }, [categorySlug])
+    }, [categorySlug, location.search])
+    
+    const handleSubcategoryClick = (subcategory) => {
+        setSelectedSubcategory(subcategory)
+        const filtered = products.filter(product => {
+            const productCategory = product.category || ''
+            return subcategory.fullPaths.includes(productCategory)
+        })
+        setFilteredProducts(filtered)
+        setCurrentPage(1)
+        setDisplayedProducts(filtered.slice(0, itemsPerPage))
+        // URL'i güncelle
+        const newUrl = `${location.pathname}?subcategory=${subcategory.slug}`
+        window.history.pushState({}, '', newUrl)
+    }
 
     if (loading) {
         return (
@@ -140,6 +254,39 @@ const CategoryPage = () => {
                             </div>
                         </div>
                     </div>
+
+                    {/* Alt Kategori Filtreleri */}
+                    {subcategories.length > 0 && (
+                        <div className="subcategory-filters mb-4">
+                            <div className="row">
+                                <div className="col-12">
+                                    <h4 className="mb-3">Alt Kategoriler:</h4>
+                                    <div className="subcategory-buttons">
+                                        <button
+                                            className={`btn ${selectedSubcategory === null ? 'btn-primary' : 'btn-outline-primary'} me-2 mb-2`}
+                                            onClick={() => {
+                                                setSelectedSubcategory(null)
+                                                setFilteredProducts(products)
+                                                const newUrl = location.pathname
+                                                window.history.pushState({}, '', newUrl)
+                                            }}
+                                        >
+                                            Tümü ({products.length})
+                                        </button>
+                                        {subcategories.map((subcat, index) => (
+                                            <button
+                                                key={index}
+                                                className={`btn ${selectedSubcategory?.slug === subcat.slug ? 'btn-primary' : 'btn-outline-primary'} me-2 mb-2`}
+                                                onClick={() => handleSubcategoryClick(subcat)}
+                                            >
+                                                {subcat.name}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
 
                     {/* Filter Bileşeni */}
                     <div className="row mb-4">
@@ -185,13 +332,50 @@ const CategoryPage = () => {
                     </div>
                     
                     {filteredProducts.length > 0 ? (
-                        <div className="row">
-                            {filteredProducts.map((product) => (
-                                <div key={product.id} className="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
-                                    <ProductCard data={product} />
+                        <>
+                            <div className="row">
+                                {displayedProducts.map((product) => (
+                                    <div key={product.id} className="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+                                        <ProductCard data={product} />
+                                    </div>
+                                ))}
+                            </div>
+                            
+                            {/* Loading More Indicator */}
+                            {loadingMore && (
+                                <div className="row mt-4">
+                                    <div className="col-12 text-center">
+                                        <div className="spinner-border text-primary" role="status">
+                                            <span className="sr-only">Yükleniyor...</span>
+                                        </div>
+                                        <p className="mt-2">Daha fazla ürün yükleniyor...</p>
+                                    </div>
                                 </div>
-                            ))}
-                        </div>
+                            )}
+                            
+                            {/* Load More Button (alternatif) */}
+                            {!loadingMore && displayedProducts.length < filteredProducts.length && (
+                                <div className="row mt-4">
+                                    <div className="col-12 text-center">
+                                        <button
+                                            className="btn btn-primary"
+                                            onClick={loadMoreProducts}
+                                        >
+                                            Daha Fazla Yükle ({displayedProducts.length} / {filteredProducts.length})
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+                            
+                            {/* Tüm ürünler yüklendi mesajı */}
+                            {displayedProducts.length >= filteredProducts.length && displayedProducts.length > itemsPerPage && (
+                                <div className="row mt-4">
+                                    <div className="col-12 text-center">
+                                        <p className="text-muted">Tüm ürünler gösterildi ({filteredProducts.length} ürün)</p>
+                                    </div>
+                                </div>
+                            )}
+                        </>
                     ) : (
                         <div className="row">
                             <div className="col-lg-12">

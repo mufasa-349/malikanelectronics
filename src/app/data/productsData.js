@@ -1,7 +1,8 @@
 // Tüm ürün verilerini JSON'dan yükle
 import allProductsData from './allProducts.json'
+import categoryTreeData from './categoryTree.json'
 
-// Ürün adından benzersiz 6 haneli kod oluştur (backup için)
+// Ürün adından benzersiz 6 haneli kod oluştur
 const generateProductCode = (productName) => {
     const cleanName = productName.toLowerCase()
         .replace(/[^a-z0-9\s]/g, '')
@@ -19,8 +20,52 @@ const generateProductCode = (productName) => {
     return code.toString();
 }
 
+// Ürünleri formatla ve ID ekle
+const formatProducts = () => {
+    return allProductsData.map((product, index) => {
+        // Yeni obje oluştur (readonly property hatasını önlemek için)
+        const formattedProduct = { ...product };
+        
+        // Eğer id yoksa oluştur
+        if (!formattedProduct.id) {
+            formattedProduct.id = parseInt(formattedProduct['Product ID']) || index + 1;
+        }
+        
+        // Eğer productCode yoksa oluştur
+        if (!formattedProduct.productCode) {
+            formattedProduct.productCode = generateProductCode(formattedProduct.name || formattedProduct['Product Name']);
+        }
+        
+        // Ana görseli image attribute'undan öncelikli olarak al
+        // image -> img -> mainImage -> images[0] sırasıyla kontrol et
+        if (formattedProduct.image) {
+            formattedProduct.img = formattedProduct.image;
+            formattedProduct.mainImage = formattedProduct.image;
+        } else if (formattedProduct.img) {
+            formattedProduct.mainImage = formattedProduct.img;
+        } else if (formattedProduct.mainImage) {
+            formattedProduct.img = formattedProduct.mainImage;
+        } else if (formattedProduct.images && formattedProduct.images.length > 0) {
+            formattedProduct.img = formattedProduct.images[0];
+            formattedProduct.mainImage = formattedProduct.images[0];
+        }
+        
+        // title alanını name'den oluştur
+        if (!formattedProduct.title) {
+            formattedProduct.title = formattedProduct.name || formattedProduct['Product Name'];
+        }
+        
+        // inStock varsayılan olarak true
+        if (formattedProduct.inStock === undefined) {
+            formattedProduct.inStock = true;
+        }
+        
+        return formattedProduct;
+    });
+}
+
 export const getProductsData = () => {
-    return allProductsData
+    return formatProducts();
 }
 
 
@@ -226,13 +271,96 @@ export const getFirstFiveProducts = () => {
     ]
 }
 
+// Kategori slug'ından kategori adını bul
+const getCategoryNameBySlug = (slug) => {
+    for (const [mainCat, data] of Object.entries(categoryTreeData)) {
+        if (data.slug === slug) {
+            return mainCat;
+        }
+        // Alt kategorileri kontrol et
+        for (const [subCat, subData] of Object.entries(data.subcategories)) {
+            if (subData.slug === slug) {
+                return subCat;
+            }
+        }
+    }
+    return null;
+}
+
 // Kategoriye göre ürünleri filtrele
 export const getProductsByCategory = (categorySlug) => {
-    const products = getProductsData()
-    if (categorySlug === 'all') {
-        return products
+    const products = getProductsData();
+    
+    if (categorySlug === 'all' || categorySlug === 'tum-urunler') {
+        return products;
     }
-    return products.filter(product => product.category === categorySlug)
+    
+    // Ana kategori slug'ından kategori adını bul
+    const categoryName = getCategoryNameBySlug(categorySlug);
+    if (!categoryName) {
+        return [];
+    }
+    
+    // Kategori ağacından tam kategori yollarını bul
+    const matchingCategories = [];
+    for (const [mainCat, data] of Object.entries(categoryTreeData)) {
+        if (data.slug === categorySlug || mainCat === categoryName) {
+            // Ana kategori eşleşiyorsa, tüm alt kategorilerini ekle
+            for (const [subCat, subData] of Object.entries(data.subcategories)) {
+                matchingCategories.push(...subData.full_paths);
+            }
+            // Eğer alt kategori yoksa, ana kategoriyi ekle
+            if (Object.keys(data.subcategories).length === 0) {
+                matchingCategories.push(mainCat);
+            }
+        } else {
+            // Alt kategori kontrolü
+            for (const [subCat, subData] of Object.entries(data.subcategories)) {
+                if (subData.slug === categorySlug || subCat === categoryName) {
+                    matchingCategories.push(...subData.full_paths);
+                }
+            }
+        }
+    }
+    
+    // Ürünleri filtrele
+    return products.filter(product => {
+        const productCategory = product.category || '';
+        // Tam kategori yolu eşleşmesi
+        if (matchingCategories.includes(productCategory)) {
+            return true;
+        }
+        // Ana kategori eşleşmesi (">" ile başlayan kategoriler için)
+        if (productCategory.includes('>')) {
+            const mainCat = productCategory.split('>')[0].trim();
+            if (mainCat === categoryName) {
+                return true;
+            }
+        } else if (productCategory === categoryName) {
+            return true;
+        }
+        return false;
+    });
+}
+
+// Ana kategorileri getir
+export const getMainCategories = () => {
+    return Object.keys(categoryTreeData).map(mainCat => {
+        const data = categoryTreeData[mainCat];
+        return {
+            name: mainCat,
+            slug: data.slug,
+            subcategories: Object.keys(data.subcategories).map(subCat => ({
+                name: subCat,
+                slug: data.subcategories[subCat].slug
+            }))
+        };
+    });
+}
+
+// Kategori ağacını getir
+export const getCategoryTree = () => {
+    return categoryTreeData;
 }
 
 // ID'ye göre ürün bul

@@ -7,7 +7,7 @@ const CardPharmacy = (props) => {
             <div className="col-lg-3 col-md-4 col-sm-6 col-12">
                 <div className="pharmacy_product_card">
                     <div className="pharmacy_product_img">
-                        <Link to="/shoplist"><img src={props.data.mainImage || props.data.images?.[0] || props.data.img} alt="img" /></Link>
+                        <Link to="/shoplist"><img src={props.data.image || props.data.img || props.data.mainImage || props.data.images?.[0]} alt="img" /></Link>
                         <span className="batch">{props.data.batch}</span>
                         <div className="pharmacy_product_icon">
                             <ul>
