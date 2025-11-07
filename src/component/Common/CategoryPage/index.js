@@ -145,6 +145,7 @@ const CategoryPage = () => {
         const fetchProducts = async () => {
             setLoading(true)
             try {
+                console.log('CategoryPage - categorySlug:', categorySlug)
                 const urlParams = new URLSearchParams(location.search)
                 const subcategoryParam = urlParams.get('subcategory')
                 
@@ -155,9 +156,12 @@ const CategoryPage = () => {
                     // Tüm ürünleri getir
                     categoryProducts = getProductsData()
                     setCategoryName('Tüm Ürünler')
+                    setFilteredProducts(categoryProducts)
+                    setDisplayedProducts(categoryProducts.slice(0, itemsPerPage))
                 } else {
                     // Belirli kategori ürünlerini getir
                     categoryProducts = getProductsByCategory(categorySlug)
+                    console.log('CategoryPage - categoryProducts:', categoryProducts?.length || 0)
                     setCategoryName(getCategoryName(categorySlug))
                     
                     // Kategori ağacından alt kategorileri bul
@@ -194,6 +198,9 @@ const CategoryPage = () => {
                     }
                 }
                 
+                console.log('CategoryPage - Final categoryProducts:', categoryProducts?.length || 0)
+                console.log('CategoryPage - categoryName:', categoryName || getCategoryName(categorySlug))
+                
                 setProducts(categoryProducts)
                 setSubcategories(foundSubcategories)
                 setCurrentPage(1)
@@ -201,12 +208,13 @@ const CategoryPage = () => {
                 console.error('Ürünler yüklenirken hata:', error)
                 setProducts([])
                 setFilteredProducts([])
+                setDisplayedProducts([])
             }
             setLoading(false)
         }
 
         fetchProducts()
-    }, [categorySlug, location.search])
+    }, [categorySlug, location.search, itemsPerPage])
     
     const handleSubcategoryClick = (subcategory) => {
         setSelectedSubcategory(subcategory)
@@ -240,6 +248,10 @@ const CategoryPage = () => {
             </>
         )
     }
+
+    console.log('CategoryPage Render - filteredProducts.length:', filteredProducts.length)
+    console.log('CategoryPage Render - displayedProducts.length:', displayedProducts.length)
+    console.log('CategoryPage Render - categoryName:', categoryName)
 
     return (
         <>
