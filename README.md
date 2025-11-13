@@ -1,70 +1,184 @@
-# Getting Started with Create React App
+# Malikane Electronics E-Ticaret Sitesi
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Malikane Electronics için geliştirilmiş modern React tabanlı e-ticaret web uygulaması.
 
-## Available Scripts
+## 🚀 Özellikler
 
-In the project directory, you can run:
+- 🛍️ Ürün kataloğu ve kategoriler
+- 🔍 Ürün arama ve filtreleme
+- 👤 Firebase Authentication ile kullanıcı girişi/kaydı
+- 🛒 Sepet ve ödeme işlemleri
+- 📱 Responsive tasarım
+- 🌐 Çoklu dil desteği (Türkçe/İngilizce)
 
-### `yarn start`
+## 📋 Gereksinimler
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- Node.js (v14 veya üzeri)
+- npm veya yarn
+- Firebase projesi (Authentication ve Firestore için)
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## 🔧 Kurulum
 
-### `yarn test`
+### 1. Projeyi Klonlayın
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```bash
+git clone <repository-url>
+cd malikanelectronics
+```
 
-### `yarn build`
+### 2. Bağımlılıkları Yükleyin
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```bash
+npm install
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+**Not:** Eğer peer dependency hataları alırsanız, proje `.npmrc` dosyasında `legacy-peer-deps=true` ayarı ile yapılandırılmıştır. Bu ayar otomatik olarak uygulanır.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### 3. Firebase Yapılandırması
 
-### `yarn eject`
+Firebase yapılandırmanız `src/firebaseConfig.js` dosyasında mevcut. Eğer farklı bir Firebase projesi kullanmak istiyorsanız, bu dosyayı düzenleyin:
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+```javascript
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_AUTH_DOMAIN",
+  projectId: "YOUR_PROJECT_ID",
+  // ... diğer ayarlar
+};
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### 4. Uygulamayı Çalıştırın
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Geliştirme modunda çalıştırmak için:
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+```bash
+npm start
+```
 
-## Learn More
+Uygulama [http://localhost:3000](http://localhost:3000) adresinde açılacaktır.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## 📜 Mevcut Komutlar
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Geliştirme
 
-### Code Splitting
+```bash
+npm start
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Geliştirme sunucusunu başlatır. Tarayıcıda otomatik olarak açılır ve kod değişikliklerinde otomatik yenilenir.
 
-### Analyzing the Bundle Size
+### Production Build
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+```bash
+npm run build
+```
 
-### Making a Progressive Web App
+Production için optimize edilmiş build oluşturur. Build dosyaları `build/` klasörüne yazılır.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### Test
 
-### Advanced Configuration
+```bash
+npm test
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+Test suite'ini çalıştırır.
 
-### Deployment
+## 🏗️ Proje Yapısı
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+```
+malikanelectronics/
+├── public/                 # Statik dosyalar
+├── src/
+│   ├── app/              # Uygulama mantığı
+│   │   ├── data/         # Ürün verileri ve kategoriler
+│   │   ├── slices/       # Redux slices
+│   │   └── store.js      # Redux store
+│   ├── assets/           # CSS, resimler ve diğer assetler
+│   ├── component/        # React bileşenleri
+│   ├── page/             # Sayfa bileşenleri
+│   ├── firebaseConfig.js # Firebase yapılandırması
+│   └── index.js          # Uygulama giriş noktası
+├── package.json
+└── README.md
+```
 
-### `yarn build` fails to minify
+## 🔐 Firebase Authentication
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Uygulama Firebase Authentication kullanmaktadır. Kullanıcılar:
+
+- Email/şifre ile kayıt olabilir
+- Email/şifre ile giriş yapabilir
+- Profil bilgilerini görüntüleyebilir
+- Çıkış yapabilir
+
+Firebase Console'da Authentication ve Firestore'u etkinleştirmeniz gerekir.
+
+## 🌐 Deployment
+
+### Production Build Oluşturma
+
+```bash
+npm run build
+```
+
+### Nginx Yapılandırması
+
+SPA routing için Nginx yapılandırmanızda şu ayarları kullanın:
+
+```nginx
+location / {
+    try_files $uri $uri/ /index.html;
+}
+
+location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$ {
+    expires 1y;
+    add_header Cache-Control "public, immutable";
+}
+```
+
+## 🐛 Sorun Giderme
+
+### `npm install` Hataları
+
+Eğer peer dependency hataları alırsanız:
+
+```bash
+rm -rf node_modules package-lock.json
+npm install
+```
+
+### Build Hataları
+
+OpenSSL legacy provider hatası alırsanız, `package.json`'daki script'ler zaten `NODE_OPTIONS=--openssl-legacy-provider` ile yapılandırılmıştır.
+
+### Firebase Bağlantı Hataları
+
+- Firebase Console'da projenizin aktif olduğundan emin olun
+- `firebaseConfig.js` dosyasındaki yapılandırmanın doğru olduğunu kontrol edin
+- Firestore ve Authentication servislerinin etkin olduğunu doğrulayın
+
+## 📝 Notlar
+
+- Proje React 17 ve Firebase 8.x kullanmaktadır
+- `react-scripts` 4.0.3 versiyonu kullanılmaktadır
+- Legacy peer dependencies için `.npmrc` dosyası yapılandırılmıştır
+
+## 👥 Katkıda Bulunma
+
+1. Fork edin
+2. Feature branch oluşturun (`git checkout -b feature/amazing-feature`)
+3. Değişikliklerinizi commit edin (`git commit -m 'Add some amazing feature'`)
+4. Branch'inizi push edin (`git push origin feature/amazing-feature`)
+5. Pull Request oluşturun
+
+## 📄 Lisans
+
+Bu proje özel bir projedir.
+
+## 📞 İletişim
+
+Sorularınız için lütfen iletişime geçin.
+
+---
+
+**Not:** İlk kurulumdan sonra `npm start` komutu ile uygulamayı çalıştırabilirsiniz. Tüm bağımlılıklar otomatik olarak yüklenecektir.
