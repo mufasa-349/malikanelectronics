@@ -1209,6 +1209,144 @@ button {
     background: rgba(255, 255, 255, 0.2);
 }
 
+/* User Profile Styles */
+.user-profile-dropdown {
+    position: relative;
+}
+
+.user-profile-link {
+    display: flex !important;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 14px !important;
+    letter-spacing: normal !important;
+    color: #24262b;
+    transition: all 0.3s ease;
+}
+
+.user-profile-link:hover {
+    background: rgba(0, 0, 0, 0.05);
+    color: var(--main-theme-color);
+}
+
+.user-profile-link i {
+    font-size: 20px !important;
+    color: #24262b;
+}
+
+.user-profile-link:hover i {
+    color: var(--main-theme-color);
+}
+
+.user-profile-link span {
+    font-size: 14px !important;
+    font-weight: 500;
+    background: none !important;
+    width: auto !important;
+    height: auto !important;
+    border-radius: 0 !important;
+    line-height: normal !important;
+    letter-spacing: normal !important;
+    color: #24262b;
+}
+
+.user-profile-link:hover span {
+    color: var(--main-theme-color);
+}
+
+.user-dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    min-width: 180px;
+    z-index: 1000;
+    margin-top: 8px;
+    overflow: hidden;
+}
+
+.user-dropdown-menu a {
+    display: block;
+    padding: 12px 16px;
+    text-decoration: none;
+    color: #333;
+    font-size: 14px;
+    transition: background 0.2s ease;
+    letter-spacing: normal !important;
+}
+
+.user-dropdown-menu a:first-child {
+    border-bottom: 1px solid #eee;
+}
+
+.user-dropdown-menu a:hover {
+    background: #f5f5f5;
+}
+
+.user-dropdown-menu a i {
+    margin-right: 8px;
+    font-size: 16px;
+}
+
+.user-dropdown-menu a:last-child {
+    color: #dc3545;
+}
+
+.user-dropdown-menu a:last-child:hover {
+    background: #ffe6e6;
+}
+
+/* Login/Register Button Styles */
+.header-login-btn,
+.header-register-btn {
+    display: flex !important;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 14px !important;
+    letter-spacing: normal !important;
+    color: #24262b;
+    transition: all 0.3s ease;
+}
+
+.header-login-btn:hover {
+    background: rgba(0, 0, 0, 0.05);
+    color: var(--main-theme-color);
+}
+
+.header-register-btn {
+    background: #f0f0f0;
+}
+
+.header-register-btn:hover {
+    background: var(--main-theme-color);
+    color: white;
+}
+
+.header-login-btn i,
+.header-register-btn i {
+    font-size: 18px !important;
+}
+
+.header-login-btn span,
+.header-register-btn span {
+    font-size: 14px !important;
+    background: none !important;
+    width: auto !important;
+    height: auto !important;
+    border-radius: 0 !important;
+    line-height: normal !important;
+    letter-spacing: normal !important;
+}
+
 .seperate-sticky-bar {
     display: none;
 }
@@ -7683,6 +7821,43 @@ table {
 
 .mobile-search-box button:hover {
     background: #0056b3;
+}
+
+/* Mobile User Section Styles */
+.mobile-user-section {
+    border-top: 1px solid #eee;
+    margin-top: 10px;
+    padding-top: 10px;
+}
+
+.mobile-user-link,
+.mobile-logout-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 0;
+    text-decoration: none;
+    color: #333;
+    transition: color 0.3s ease;
+}
+
+.mobile-user-link:hover {
+    color: var(--main-theme-color);
+}
+
+.mobile-logout-link {
+    color: #dc3545;
+}
+
+.mobile-logout-link:hover {
+    color: #c82333;
+}
+
+.mobile-user-link i,
+.mobile-logout-link i {
+    font-size: 20px;
+    width: 24px;
+    text-align: center;
 }
 
 /*--------------------------------

@@ -7,6 +7,8 @@ import App from './App';
 
 import { store } from './app/store';
 import { Provider } from 'react-redux';
+import { auth, db } from './firebaseConfig';
+import { register, logout } from './app/slices/user';
 
 // import Bootstrap CSS first
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -16,6 +18,45 @@ import "./assets/css/style.css"
 import "./assets/css/color.css"
 import "./assets/css/responsive.css"
 import "./assets/css/animate.min.css"
+
+// Firebase Auth State Listener - Kullanıcı giriş durumunu takip et
+auth.onAuthStateChanged(async (user) => {
+  if (user) {
+    // Kullanıcı giriş yapmış
+    try {
+      // Firestore'dan kullanıcı bilgilerini al
+      const docRef = db.collection('users').doc(user.uid);
+      const docSnap = await docRef.get();
+      
+      let userName = 'Müşteri';
+      if (docSnap.exists) {
+        const data = docSnap.data();
+        userName = data.name || user.displayName || 'Müşteri';
+      } else {
+        userName = user.displayName || (user.email ? user.email.split('@')[0] : 'Müşteri');
+      }
+      
+      // Redux store'u güncelle
+      store.dispatch(register({ 
+        user: userName, 
+        email: user.email || '', 
+        pass: '' 
+      }));
+    } catch (error) {
+      console.error('Firebase auth state listener error:', error);
+      // Fallback: sadece email'den kullanıcı adı oluştur
+      const userName = user.displayName || (user.email ? user.email.split('@')[0] : 'Müşteri');
+      store.dispatch(register({ 
+        user: userName, 
+        email: user.email || '', 
+        pass: '' 
+      }));
+    }
+  } else {
+    // Kullanıcı çıkış yapmış
+    store.dispatch(logout());
+  }
+});
 
 ReactDOM.render(
   <React.StrictMode>

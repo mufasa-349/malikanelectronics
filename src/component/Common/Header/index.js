@@ -11,6 +11,8 @@ import svgsearch from '../../../assets/img/svg/search.svg'
 
 import { useDispatch, useSelector } from "react-redux";
 import Swal from 'sweetalert2'
+import { logout } from '../../../app/slices/user'
+import { auth } from '../../../firebaseConfig'
 
 const Header = () => {
     const [click, setClick] = useState(false);
@@ -18,7 +20,31 @@ const Header = () => {
     const history = useHistory()
     let carts = useSelector((state) => state.products.carts);
     let favorites = useSelector((state) => state.products.favorites);
+    let userStatus = useSelector((state) => state.user.status);
+    let userData = useSelector((state) => state.user.user);
     let dispatch = useDispatch();
+
+    const handleLogout = async () => {
+        try {
+            await auth.signOut()
+            dispatch(logout())
+            Swal.fire({
+                icon: 'success',
+                title: 'Çıkış Yapıldı',
+                text: 'Başarıyla çıkış yaptınız',
+                timer: 1500,
+                showConfirmButton: false
+            })
+            history.push('/')
+        } catch (error) {
+            console.error('Logout error:', error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Hata',
+                text: 'Çıkış yapılırken bir hata oluştu'
+            })
+        }
+    }
 
     const rmCartProduct = (id) => {
         dispatch({ type: "products/removeCart", payload: { id } });
@@ -90,6 +116,23 @@ const Header = () => {
         };
     });
 
+    // Close dropdown when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (show === 'user-menu' && !event.target.closest('.user-profile-dropdown')) {
+                setShow('');
+            }
+        };
+
+        if (show === 'user-menu') {
+            document.addEventListener('mousedown', handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [show]);
+
     const isSticky = (e) => {
         const header = document.querySelector('.header-section');
         const scrollTop = window.scrollY;
@@ -126,6 +169,64 @@ const Header = () => {
                                                 <img src={svgsearch} alt="img" />
                                             </a>
                                         </li>
+                                        {userStatus ? (
+                                            <li className="user-profile-dropdown">
+                                                <a 
+                                                    href="#!" 
+                                                    className="user-profile-link"
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        handleShow('user-menu');
+                                                    }}
+                                                >
+                                                    <i className="fa fa-user-circle"></i>
+                                                    <span>{userData.name || 'Kullanıcı'}</span>
+                                                </a>
+                                                {show === 'user-menu' && (
+                                                    <div className="user-dropdown-menu">
+                                                        <Link 
+                                                            to="/my-account"
+                                                            onClick={() => setShow('')}
+                                                        >
+                                                            <i className="fa fa-user"></i>
+                                                            Hesabım
+                                                        </Link>
+                                                        <a 
+                                                            href="#!"
+                                                            onClick={(e) => {
+                                                                e.preventDefault();
+                                                                handleLogout();
+                                                                setShow('');
+                                                            }}
+                                                        >
+                                                            <i className="fa fa-sign-out"></i>
+                                                            Çıkış Yap
+                                                        </a>
+                                                    </div>
+                                                )}
+                                            </li>
+                                        ) : (
+                                            <>
+                                                <li>
+                                                    <Link 
+                                                        to="/login"
+                                                        className="header-login-btn"
+                                                    >
+                                                        <i className="fa fa-sign-in"></i>
+                                                        <span>Giriş Yap</span>
+                                                    </Link>
+                                                </li>
+                                                <li>
+                                                    <Link 
+                                                        to="/register"
+                                                        className="header-register-btn"
+                                                    >
+                                                        <i className="fa fa-user-plus"></i>
+                                                        <span>Kayıt Ol</span>
+                                                    </Link>
+                                                </li>
+                                            </>
+                                        )}
                                         <li>
                                             <a 
                                                 href="https://wa.me/905393973949?text=Merhaba, Malikane Electronics ürünleriniz hakkında bilgi almak istiyorum." 
@@ -266,6 +367,46 @@ const Header = () => {
                                 <li>
                                     <Link to="/contact"><span>İletişim</span></Link>
                                 </li>
+                                {/* Kullanıcı Durumu */}
+                                {userStatus ? (
+                                    <>
+                                        <li className="mobile-user-section">
+                                            <Link to="/my-account" className="mobile-user-link">
+                                                <i className="fa fa-user-circle"></i>
+                                                <span>{userData.name || 'Kullanıcı'}</span>
+                                            </Link>
+                                        </li>
+                                        <li>
+                                            <a 
+                                                href="#!"
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    handleLogout();
+                                                    handlemenu(e);
+                                                }}
+                                                className="mobile-logout-link"
+                                            >
+                                                <i className="fa fa-sign-out"></i>
+                                                <span>Çıkış Yap</span>
+                                            </a>
+                                        </li>
+                                    </>
+                                ) : (
+                                    <>
+                                        <li className="mobile-user-section">
+                                            <Link to="/login" className="mobile-user-link">
+                                                <i className="fa fa-sign-in"></i>
+                                                <span>Giriş Yap</span>
+                                            </Link>
+                                        </li>
+                                        <li>
+                                            <Link to="/register" className="mobile-user-link">
+                                                <i className="fa fa-user-plus"></i>
+                                                <span>Kayıt Ol</span>
+                                            </Link>
+                                        </li>
+                                    </>
+                                )}
                             </ul>
                         </div>
 
