@@ -1,6 +1,7 @@
 // Tüm ürün verilerini JSON'dan yükle
 import allProductsData from './allProducts.json'
 import categoryTreeData from './categoryTree.json'
+import productEans from './productEans.json'
 
 // Ürün adından benzersiz 6 haneli kod oluştur
 const generateProductCode = (productName) => {
@@ -25,15 +26,29 @@ const formatProducts = () => {
     return allProductsData.map((product, index) => {
         // Yeni obje oluştur (readonly property hatasını önlemek için)
         const formattedProduct = { ...product };
-        
-        // Eğer id yoksa oluştur
-        if (!formattedProduct.id) {
-            formattedProduct.id = parseInt(formattedProduct['Product ID']) || index + 1;
-        }
+        const productIdString = (formattedProduct.id || formattedProduct['Product ID'] || formattedProduct.productId || '').toString();
+        const numericId = parseInt(productIdString, 10);
+
+        // ID'yi sayıya çevir ve yedekle
+        formattedProduct.originalId = productIdString || null;
+        formattedProduct.id = Number.isNaN(numericId) ? index + 1 : numericId;
         
         // Eğer productCode yoksa oluştur
         if (!formattedProduct.productCode) {
             formattedProduct.productCode = generateProductCode(formattedProduct.name || formattedProduct['Product Name']);
+        }
+
+        // EAN bilgisini ekle
+        if (!formattedProduct.ean) {
+            formattedProduct.ean =
+                formattedProduct['ean'] ||
+                formattedProduct['EAN'] ||
+                formattedProduct['EAN Number'] ||
+                formattedProduct['Barkod (EAN Number)'] ||
+                productEans[productIdString] ||
+                null;
+        } else if (!formattedProduct.ean && productEans[productIdString]) {
+            formattedProduct.ean = productEans[productIdString];
         }
         
         // Ana görseli image attribute'undan öncelikli olarak al

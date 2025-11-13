@@ -164,6 +164,10 @@ const ProductDetailsOne = () => {
         )
     }
 
+    const descriptionParagraphs = product.description
+        ? product.description.split(/\n+/).map(paragraph => paragraph.trim()).filter(Boolean)
+        : [];
+
     return (
         <>
             <section id="product_single_one" className="ptb-100">
@@ -190,33 +194,35 @@ const ProductDetailsOne = () => {
                                 </div>
                                 
                                 {/* Thumbnail Galerisi */}
-                                <div className="product-gallery mt-4">
-                                    <h6 className="gallery-title">Ürün Görselleri</h6>
-                                    <div className="gallery-thumbnails">
-                                        {product.images.map((image, index) => (
-                                            <div 
-                                                key={index} 
-                                                className={`thumbnail-item ${img === image ? 'active' : ''} ${isHovering && hoveredImage === image ? 'hovering' : ''}`}
-                                                onClick={() => handleThumbnailClick(image)}
-                                                onMouseEnter={() => handleThumbnailHover(image)}
-                                                onMouseLeave={handleThumbnailLeave}
-                                            >
-                                                <img 
-                                                    src={image} 
-                                                    alt={`${product?.title || 'Ürün'} ${index + 1}`}
-                                                    className="thumbnail-image"
-                                                    onError={(e) => {
-                                                        e.currentTarget.src = PLACEHOLDER;
-                                                    }}
-                                                />
-                                                {/* Hover overlay */}
-                                                <div className="thumbnail-hover-overlay">
-                                                    <i className="fa fa-search-plus"></i>
+                                {product.images && product.images.length > 0 && (
+                                    <div className="product-gallery mt-4">
+                                        <h6 className="gallery-title">Ürün Görselleri</h6>
+                                        <div className="gallery-thumbnails">
+                                            {product.images.map((image, index) => (
+                                                <div 
+                                                    key={index} 
+                                                    className={`thumbnail-item ${img === image ? 'active' : ''} ${isHovering && hoveredImage === image ? 'hovering' : ''}`}
+                                                    onClick={() => handleThumbnailClick(image)}
+                                                    onMouseEnter={() => handleThumbnailHover(image)}
+                                                    onMouseLeave={handleThumbnailLeave}
+                                                >
+                                                    <img 
+                                                        src={image} 
+                                                        alt={`${product?.title || 'Ürün'} ${index + 1}`}
+                                                        className="thumbnail-image"
+                                                        onError={(e) => {
+                                                            e.currentTarget.src = PLACEHOLDER;
+                                                        }}
+                                                    />
+                                                    {/* Hover overlay */}
+                                                    <div className="thumbnail-hover-overlay">
+                                                        <i className="fa fa-search-plus"></i>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        ))}
+                                            ))}
+                                        </div>
                                     </div>
-                                </div>
+                                )}
                             </div>
                         </div>
                         <div className="col-lg-8">
@@ -229,6 +235,11 @@ const ProductDetailsOne = () => {
                                     <div className="product-code-info mb-2">
                                         <small className="text-muted">Ürün Kodu: <strong>{product.productCode}</strong></small>
                                     </div>
+                                    {product.ean && (
+                                        <div className="product-ean-info mb-3">
+                                            <small className="text-muted">EAN: <strong>{product.ean}</strong></small>
+                                        </div>
+                                    )}
                                 <div className="reviews_rating">
                                     <RatingStar maxScore={5} rating={product.rating} id="rating-star-common" />
                                     <span>({product.reviewCount} Müşteri Değerlendirmesi)</span>
@@ -323,7 +334,16 @@ const ProductDetailsOne = () => {
                                     <div className="product-description-section mt-4">
                                         <h5 className="description-title">Ürün Açıklaması</h5>
                                         <div className="description-content">
-                                            <p>{product.description}</p>
+                                            {descriptionParagraphs.length > 0 ? (
+                                                descriptionParagraphs.map((paragraph, index) => (
+                                                    <p key={index}>{paragraph}</p>
+                                                ))
+                                            ) : (
+                                                <p>Bu ürün için detaylı açıklama yakında eklenecektir.</p>
+                                            )}
+                                            {product.ean && (
+                                                <p><strong>EAN:</strong> {product.ean}</p>
+                                            )}
                                         </div>
                                     </div>
                                     
