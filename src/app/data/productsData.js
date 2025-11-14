@@ -1,7 +1,11 @@
-// Tüm ürün verilerini JSON'dan yükle
-import allProductsData from './allProducts.json'
+// Firebase'den ürün verilerini yükle
+import { db } from '../../firebaseConfig'
 import categoryTreeData from './categoryTree.json'
 import productEans from './productEans.json'
+
+// Cache için
+let cachedProducts = null;
+let productsLoaded = false;
 
 // Ürün adından benzersiz 6 haneli kod oluştur
 const generateProductCode = (productName) => {
@@ -22,8 +26,11 @@ const generateProductCode = (productName) => {
 }
 
 // Ürünleri formatla ve ID ekle
-const formatProducts = () => {
-    return allProductsData.map((product, index) => {
+const formatProducts = (productsData) => {
+    if (!productsData || !Array.isArray(productsData)) {
+        return [];
+    }
+    return productsData.map((product, index) => {
         // Yeni obje oluştur (readonly property hatasını önlemek için)
         const formattedProduct = { ...product };
         const productIdString = (formattedProduct.id || formattedProduct['Product ID'] || formattedProduct.productId || '').toString();
@@ -79,8 +86,59 @@ const formatProducts = () => {
     });
 }
 
-export const getProductsData = () => {
-    return formatProducts();
+// Firebase'den ürünleri getir
+export const getProductsData = async () => {
+    // Eğer cache'de varsa ve yüklenmişse, cache'i döndür
+    if (productsLoaded && cachedProducts) {
+        return cachedProducts;
+    }
+
+    try {
+        // Firebase'den ürünleri çek
+        const productsSnapshot = await db.collection('products').get();
+        const productsData = [];
+        
+        productsSnapshot.forEach((doc) => {
+            const data = doc.data();
+            // Firestore timestamp'leri string'e çevir (Redux serialization için)
+            if (data.createdAt) {
+                if (data.createdAt.toDate) {
+                    data.createdAt = data.createdAt.toDate().toISOString();
+                } else if (data.createdAt instanceof Date) {
+                    data.createdAt = data.createdAt.toISOString();
+                }
+            }
+            if (data.updatedAt) {
+                if (data.updatedAt.toDate) {
+                    data.updatedAt = data.updatedAt.toDate().toISOString();
+                } else if (data.updatedAt instanceof Date) {
+                    data.updatedAt = data.updatedAt.toISOString();
+                }
+            }
+            productsData.push(data);
+        });
+
+        // Ürünleri formatla
+        const formattedProducts = formatProducts(productsData);
+        
+        // Cache'e kaydet
+        cachedProducts = formattedProducts;
+        productsLoaded = true;
+        
+        return formattedProducts;
+    } catch (error) {
+        console.error('Firebase\'den ürünler yüklenirken hata:', error);
+        // Hata durumunda boş array döndür
+        return [];
+    }
+}
+
+// Senkron versiyon (eski kod uyumluluğu için - cache'den döner)
+export const getProductsDataSync = () => {
+    if (cachedProducts) {
+        return cachedProducts;
+    }
+    return [];
 }
 
 
@@ -303,8 +361,8 @@ const getCategoryNameBySlug = (slug) => {
 }
 
 // Kategoriye göre ürünleri filtrele
-export const getProductsByCategory = (categorySlug) => {
-    const products = getProductsData();
+export const getProductsByCategory = async (categorySlug) => {
+    const products = await getProductsData();
     
     if (categorySlug === 'all' || categorySlug === 'tum-urunler') {
         return products;
@@ -378,8 +436,34 @@ export const getCategoryTree = () => {
     return categoryTreeData;
 }
 
-// ID'ye göre ürün bul
-export const getProductById = (id) => {
-    const products = getProductsData()
-    return products.find(product => product.id === parseInt(id))
+// ID'ye göre ürün bul (async)
+export const getProductById = async (id) => {
+    try {
+        const productDoc = await db.collection('products').doc(id.toString()).get();
+        if (productDoc.exists) {
+            const data = productDoc.data();
+            // Firestore timestamp'leri string'e çevir (Redux serialization için)
+            if (data.createdAt) {
+                if (data.createdAt.toDate) {
+                    data.createdAt = data.createdAt.toDate().toISOString();
+                } else if (data.createdAt instanceof Date) {
+                    data.createdAt = data.createdAt.toISOString();
+                }
+            }
+            if (data.updatedAt) {
+                if (data.updatedAt.toDate) {
+                    data.updatedAt = data.updatedAt.toDate().toISOString();
+                } else if (data.updatedAt instanceof Date) {
+                    data.updatedAt = data.updatedAt.toISOString();
+                }
+            }
+            return data;
+        }
+        return null;
+    } catch (error) {
+        console.error('Firebase\'den ürün getirilirken hata:', error);
+        // Fallback: cache'den ara
+        const products = getProductsDataSync();
+        return products.find(product => product.id === parseInt(id)) || null;
+    }
 }

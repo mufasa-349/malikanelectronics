@@ -1,25 +1,47 @@
-import {createSlice} from "@reduxjs/toolkit";
+import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
 // Demo Data
-import { getProductsData } from '../data/productsData'
+import { getProductsData, getProductById as getProductByIdFromFirebase } from '../data/productsData'
 // Alert
 import Swal from "sweetalert2";
+
+// Async thunk for fetching products
+export const fetchProducts = createAsyncThunk(
+    'products/fetchProducts',
+    async () => {
+        const products = await getProductsData();
+        return products;
+    }
+);
+
+// Async thunk for fetching single product
+export const fetchProductById = createAsyncThunk(
+    'products/fetchProductById',
+    async (id) => {
+        const product = await getProductByIdFromFirebase(id);
+        return product;
+    }
+);
 
 // Product Slice
 const productsSlice = createSlice({
     name: 'products',
     initialState: {
-        products: getProductsData(),
+        products: [],
+        loading: false,
+        error: null,
         carts: [],
         favorites: [],
         compare: [],
-        single:null,
+        single: null,
+        singleLoading: false,
+        singleError: null,
     },
     reducers: {
-        // Get Single Product
-        getProductById: (state, action) => {
-            let { id } = action.payload;
-            let arr = state.products.find(item => item.id === parseInt(id))
-            state.single = arr
+        // Clear single product
+        clearSingleProduct: (state) => {
+            state.single = null;
+            state.singleLoading = false;
+            state.singleError = null;
         },
         // Add to Cart
         addToCart: (state, action) =>{
@@ -144,6 +166,43 @@ const productsSlice = createSlice({
             state.favorites = arr
             
         },
+    },
+    extraReducers: (builder) => {
+        // Fetch products
+        builder
+            .addCase(fetchProducts.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(fetchProducts.fulfilled, (state, action) => {
+                state.loading = false;
+                state.products = action.payload;
+            })
+            .addCase(fetchProducts.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message;
+            });
+        
+        // Fetch single product
+        builder
+            .addCase(fetchProductById.pending, (state) => {
+                state.singleLoading = true;
+                state.singleError = null;
+            })
+            .addCase(fetchProductById.fulfilled, (state, action) => {
+                state.singleLoading = false;
+                state.single = action.payload;
+            })
+            .addCase(fetchProductById.rejected, (state, action) => {
+                state.singleLoading = false;
+                state.singleError = action.error.message;
+                // Fallback: products array'den ara
+                const id = action.meta.arg;
+                const product = state.products.find(item => item.id === parseInt(id));
+                if (product) {
+                    state.single = product;
+                }
+            });
     }
 })
 

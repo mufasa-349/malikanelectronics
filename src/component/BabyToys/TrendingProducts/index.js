@@ -1,21 +1,29 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import BabyHeading from '../Heading'
-import { getProductsData } from '../../../app/data/productsData'
 import ProductCard from '../../Common/Product/ProductCard'
 
 const TrendingProducts = () => {
+    // Redux'tan products al
+    const reduxProducts = useSelector((state) => state.products.products);
+    const productsLoading = useSelector((state) => state.products.loading);
+    
     const [trendingProducts, setTrendingProducts] = useState([])
     const [allAvailableProducts, setAllAvailableProducts] = useState([])
     const [displayedCount, setDisplayedCount] = useState(12)
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
+        if (productsLoading) {
+            setLoading(true)
+            return
+        }
+        
         try {
-            // En çok yorumlanan 100 ürünü al
-            const allProducts = getProductsData()
+            // Redux'tan products al
+            const allProducts = Array.isArray(reduxProducts) ? reduxProducts : []
             console.log('Toplam ürün sayısı:', allProducts.length)
-            console.log('İlk ürün:', allProducts[0])
             
             if (!allProducts || allProducts.length === 0) {
                 console.log('Ürün bulunamadı!')
@@ -43,7 +51,7 @@ const TrendingProducts = () => {
             console.error('TrendingProducts hatası:', error)
             setLoading(false)
         }
-    }, [])
+    }, [reduxProducts, productsLoading])
 
     const loadMoreProducts = () => {
         const newCount = displayedCount + 12

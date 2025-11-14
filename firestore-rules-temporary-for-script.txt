@@ -1,0 +1,40 @@
+// GEÇİCİ: Script ile ürün yüklemek için
+// Ürünler yüklendikten sonra production kurallarına geri dönün!
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Products koleksiyonu - Script için geçici olarak yazma izni açık
+    match /products/{productId} {
+      allow read: if true;
+      allow write: if true; // GEÇİCİ - Script çalıştırmak için
+    }
+    
+    // Users koleksiyonu
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Diğer koleksiyonlar
+    match /orders/{orderId} {
+      allow read, write: if request.auth != null && request.auth.uid == resource.data.userId;
+      allow create: if request.auth != null && request.auth.uid == request.resource.data.userId;
+    }
+    
+    match /carts/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    match /reviews/{reviewId} {
+      allow read: if true;
+      allow create: if request.auth != null;
+      allow update, delete: if request.auth != null && request.auth.uid == resource.data.userId;
+    }
+    
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
+

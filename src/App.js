@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route, BrowserRouter } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
+import { useDispatch } from 'react-redux';
+import { fetchProducts } from './app/slices/products';
 import loadable from './component/Common/loader/loadable';
 import Loading from './component/Common/loader';
 import pMinDelay from 'p-min-delay';
@@ -69,7 +71,14 @@ const Contact = loadable(() => pMinDelay(import('./page/contact'), 250), { fallb
 const ScrollToTop = loadable(() => pMinDelay(import('./component/Common/ScrollToTop'), 250), { fallback: <Loading /> });
 const Fashion = loadable(() => pMinDelay(import('./page/index'), 250), { fallback: <Loading /> });
 
-const App = () => {
+const AppContent = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    // Uygulama başladığında ürünleri Firebase'den yükle
+    dispatch(fetchProducts());
+  }, [dispatch]);
+
   return (
     <>
       <Helmet>
@@ -147,6 +156,10 @@ const App = () => {
 
     </>
   );
+}
+
+const App = () => {
+  return <AppContent />;
 }
 
 export default App;

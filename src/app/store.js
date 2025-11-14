@@ -9,4 +9,12 @@ export const store = configureStore({
      user: userReducer,
      settings: settingsReducer
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        // Timestamp'leri ignore et (zaten string'e çeviriyoruz)
+        ignoredActions: ['products/fetchProducts/fulfilled', 'products/fetchProductById/fulfilled'],
+        ignoredPaths: ['products.products', 'products.single'],
+      },
+    }),
 });

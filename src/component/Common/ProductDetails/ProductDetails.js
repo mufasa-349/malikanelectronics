@@ -5,47 +5,52 @@ import { useSelector, useDispatch } from "react-redux";
 import { useParams } from 'react-router-dom';
 import { RatingStar } from "rating-star";
 import Swal from 'sweetalert2';
-import { getProductById } from '../../../app/data/productsData';
+import { fetchProductById } from '../../../app/slices/products';
 import { incrementWhatsAppClick, getProductWhatsAppClicks } from '../../../utils/whatsappTracker';
 
 const ProductDetailsOne = () => {
     let dispatch = useDispatch();
     let { id } = useParams();
     
-    // Gerçek ürün verilerini al
-    const [product, setProduct] = useState(null);
-    const [loading, setLoading] = useState(true);
+    // Redux'tan ürün ve loading state'lerini al
+    const product = useSelector((state) => state.products.single);
+    const loading = useSelector((state) => state.products.singleLoading);
+    const [localProduct, setLocalProduct] = useState(null);
     
+    // Firebase'den ürünü yükle
     useEffect(() => {
-        const productData = getProductById(id);
-        if (productData) {
-            // WhatsApp tıklama sayısını local storage'dan al
-            const whatsappClicks = getProductWhatsAppClicks(productData.id);
+        if (id) {
+            dispatch(fetchProductById(id));
+        }
+    }, [id, dispatch]);
+    
+    // Ürün yüklendiğinde WhatsApp tıklama sayısını ekle
+    useEffect(() => {
+        if (product) {
+            const whatsappClicks = getProductWhatsAppClicks(product.id);
             const updatedProduct = {
-                ...productData,
+                ...product,
                 whatsappClicks: whatsappClicks
             };
-            setProduct(updatedProduct);
-            // Redux store'u da güncelle
-            dispatch({ type: "products/getProductById", payload: { id } });
+            setLocalProduct(updatedProduct);
         }
-        setLoading(false);
-    }, [id, dispatch]);
+    }, [product]);
     
     // Product yüklendiğinde ana görseli ata - image attribute'unu öncelikli kullan
     useEffect(() => {
-        if (product?.image) {
-            setImg(product.image);
-        } else if (product?.img) {
-            setImg(product.img);
-        } else if (product?.mainImage) {
-            setImg(product.mainImage);
-        } else if (product?.images?.length) {
-            setImg(product.images[0]);
+        const productToUse = localProduct || product;
+        if (productToUse?.image) {
+            setImg(productToUse.image);
+        } else if (productToUse?.img) {
+            setImg(productToUse.img);
+        } else if (productToUse?.mainImage) {
+            setImg(productToUse.mainImage);
+        } else if (productToUse?.images?.length) {
+            setImg(productToUse.images[0]);
         } else {
             setImg(null);
         }
-    }, [product]);
+    }, [product, localProduct]);
 
     // Add to cart
     const addToCart = async (id) => {
@@ -66,7 +71,7 @@ const ProductDetailsOne = () => {
     const handleWhatsAppClick = (productId) => {
         const newCount = incrementWhatsAppClick(productId);
         // Ürün state'ini güncelle
-        setProduct(prevProduct => ({
+        setLocalProduct(prevProduct => ({
             ...prevProduct,
             whatsappClicks: newCount
         }));
@@ -150,7 +155,9 @@ const ProductDetailsOne = () => {
         )
     }
 
-    if (!product) {
+    const productToDisplay = localProduct || product;
+    
+    if (!productToDisplay) {
         return (
             <section id="product_single_one" className="ptb-100">
                 <div className="container">
@@ -164,8 +171,8 @@ const ProductDetailsOne = () => {
         )
     }
 
-    const descriptionParagraphs = product.description
-        ? product.description.split(/\n+/).map(paragraph => paragraph.trim()).filter(Boolean)
+    const descriptionParagraphs = productToDisplay.description
+        ? productToDisplay.description.split(/\n+/).map(paragraph => paragraph.trim()).filter(Boolean)
         : [];
 
     return (
@@ -194,11 +201,11 @@ const ProductDetailsOne = () => {
                                 </div>
                                 
                                 {/* Thumbnail Galerisi */}
-                                {product.images && product.images.length > 0 && (
+                                {productToDisplay.images && productToDisplay.images.length > 0 && (
                                     <div className="product-gallery mt-4">
                                         <h6 className="gallery-title">Ürün Görselleri</h6>
                                         <div className="gallery-thumbnails">
-                                            {product.images.map((image, index) => (
+                                            {productToDisplay.images.map((image, index) => (
                                                 <div 
                                                     key={index} 
                                                     className={`thumbnail-item ${img === image ? 'active' : ''} ${isHovering && hoveredImage === image ? 'hovering' : ''}`}
@@ -228,36 +235,36 @@ const ProductDetailsOne = () => {
                         <div className="col-lg-8">
                             <div className="product_details_right_one">
                                 <div className="modal_product_content_one">
-                                    <h3>{product.title}</h3>
+                                    <h3>{productToDisplay.title}</h3>
                                     <div className="brand-info mb-2">
-                                        <small className="text-muted">Marka: {product.brand}</small>
+                                        <small className="text-muted">Marka: {productToDisplay.brand}</small>
                                     </div>
                                     <div className="product-code-info mb-2">
-                                        <small className="text-muted">Ürün Kodu: <strong>{product.productCode}</strong></small>
+                                        <small className="text-muted">Ürün Kodu: <strong>{productToDisplay.productCode}</strong></small>
                                     </div>
-                                    {product.ean && (
+                                    {productToDisplay.ean && (
                                         <div className="product-ean-info mb-3">
-                                            <small className="text-muted">EAN: <strong>{product.ean}</strong></small>
+                                            <small className="text-muted">EAN: <strong>{productToDisplay.ean}</strong></small>
                                         </div>
                                     )}
                                 <div className="reviews_rating">
-                                    <RatingStar maxScore={5} rating={product.rating} id="rating-star-common" />
-                                    <span>({product.reviewCount} Müşteri Değerlendirmesi)</span>
+                                    <RatingStar maxScore={5} rating={productToDisplay.rating} id="rating-star-common" />
+                                    <span>({productToDisplay.reviewCount} Müşteri Değerlendirmesi)</span>
                                 </div>
                                 
                                 {/* WhatsApp İlgi Sayısı - Sadece 3 ve üzeri olduğunda göster */}
-                                {(product.whatsappClicks || 0) >= 3 && (
+                                {(productToDisplay.whatsappClicks || 0) >= 3 && (
                                     <div className="whatsapp-interest">
                                         <span className="interest-count">
                                             <i className="fab fa-whatsapp" style={{color: '#25D366', marginRight: '5px'}}></i>
-                                            {product.whatsappClicks >= 10 ? `${product.whatsappClicks}+` : product.whatsappClicks} kişi bu ürünle ilgilendi
+                                            {productToDisplay.whatsappClicks >= 10 ? `${productToDisplay.whatsappClicks}+` : productToDisplay.whatsappClicks} kişi bu ürünle ilgilendi
                                         </span>
                                     </div>
                                 )}
                                 <div className="price-section">
-                                    <h4 className="current-price">₺{product.price.toLocaleString()}</h4>
-                                    {product.originalPrice && product.originalPrice !== product.price && (
-                                        <span className="original-price">Orijinal: ₺{product.originalPrice.toLocaleString()}</span>
+                                    <h4 className="current-price">₺{productToDisplay.price.toLocaleString()}</h4>
+                                    {productToDisplay.originalPrice && productToDisplay.originalPrice !== productToDisplay.price && (
+                                        <span className="original-price">Orijinal: ₺{productToDisplay.originalPrice.toLocaleString()}</span>
                                     )}
                                     <div className="price-info mt-2">
                                         <small className="text-muted">
@@ -294,11 +301,11 @@ const ProductDetailsOne = () => {
                                 {/* WhatsApp ve Telefon İletişim Butonları - Fiyatın hemen altında */}
                                 <div className="contact-buttons-price">
                                     <a 
-                                        href={`https://wa.me/905393973949?text=Merhaba, ${product.title} ürünü hakkında bilgi almak istiyorum. Ürün Kodu: ${product.productCode} - Fiyat: ₺${product.price.toLocaleString()}`} 
+                                        href={`https://wa.me/905393973949?text=Merhaba, ${productToDisplay.title} ürünü hakkında bilgi almak istiyorum. Ürün Kodu: ${productToDisplay.productCode} - Fiyat: ₺${productToDisplay.price.toLocaleString()}`} 
                                         target="_blank" 
                                         rel="noopener noreferrer"
                                         className="whatsapp-btn-price"
-                                        onClick={() => handleWhatsAppClick(product.id)}
+                                        onClick={() => handleWhatsAppClick(productToDisplay.id)}
                                     >
                                         <i className="fab fa-whatsapp" style={{fontSize: '18px', marginRight: '8px'}}></i>
                                         WhatsApp ile İletişim
@@ -341,8 +348,8 @@ const ProductDetailsOne = () => {
                                             ) : (
                                                 <p>Bu ürün için detaylı açıklama yakında eklenecektir.</p>
                                             )}
-                                            {product.ean && (
-                                                <p><strong>EAN:</strong> {product.ean}</p>
+                                            {productToDisplay.ean && (
+                                                <p><strong>EAN:</strong> {productToDisplay.ean}</p>
                                             )}
                                         </div>
                                     </div>
@@ -352,11 +359,11 @@ const ProductDetailsOne = () => {
                                         {/* WhatsApp ve Telefon İletişim Butonları */}
                                         <div className="contact-buttons">
                                             <a 
-                                                href={`https://wa.me/905393973949?text=Merhaba, ${product.title} ürünü hakkında bilgi almak istiyorum. Ürün Kodu: ${product.productCode} - Fiyat: ₺${product.price.toLocaleString()}`} 
+                                                href={`https://wa.me/905393973949?text=Merhaba, ${productToDisplay.title} ürünü hakkında bilgi almak istiyorum. Ürün Kodu: ${productToDisplay.productCode} - Fiyat: ₺${productToDisplay.price.toLocaleString()}`} 
                                                 target="_blank" 
                                                 rel="noopener noreferrer"
                                                 className="whatsapp-btn"
-                                                onClick={() => handleWhatsAppClick(product.id)}
+                                                onClick={() => handleWhatsAppClick(productToDisplay.id)}
                                             >
                                                 <i className="fab fa-whatsapp" style={{fontSize: '18px', marginRight: '8px'}}></i>
                                                 WhatsApp ile İletişim

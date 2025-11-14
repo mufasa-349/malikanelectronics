@@ -2,9 +2,12 @@ import React, { useState, useEffect } from 'react'
 import ProductCard from '../Common/Product/ProductCard'
 import Filter from './Filter'
 import { useSelector } from "react-redux";
-import { getProductsData } from '../../app/data/productsData';
 import BabyHeading from '../BabyToys/Heading';
 const Shop = () => {
+    // Redux'tan products al
+    const reduxProducts = useSelector((state) => state.products.products);
+    const productsLoading = useSelector((state) => state.products.loading);
+    
     const [allProducts, setAllProducts] = useState([])
     const [filteredProducts, setFilteredProducts] = useState([])
     const [loading, setLoading] = useState(true)
@@ -63,23 +66,35 @@ const Shop = () => {
         setFilteredProducts(filtered)
     }
 
+    // Redux'tan products yüklendiğinde state'i güncelle
     useEffect(() => {
-        const fetchProducts = async () => {
+        if (productsLoading) {
             setLoading(true)
-            try {
-                const products = getProductsData()
-                setAllProducts(products)
-                setFilteredProducts(products)
-            } catch (error) {
-                console.error('Ürünler yüklenirken hata:', error)
-                setAllProducts([])
-                setFilteredProducts([])
-            }
+            return
+        }
+        
+        if (reduxProducts && Array.isArray(reduxProducts) && reduxProducts.length > 0) {
+            setAllProducts(reduxProducts)
+            const initialFiltered = filterProducts(reduxProducts, filterBy)
+            const initialSorted = sortProducts(initialFiltered, sortBy)
+            setFilteredProducts(initialSorted)
+            setLoading(false)
+        } else {
+            // Loading tamamlandı ama products yok
+            setAllProducts([])
+            setFilteredProducts([])
             setLoading(false)
         }
-
-        fetchProducts()
-    }, [])
+    }, [reduxProducts, productsLoading])
+    
+    // Filter veya sort değiştiğinde güncelle
+    useEffect(() => {
+        if (allProducts.length > 0) {
+            const filtered = filterProducts(allProducts, filterBy)
+            const sorted = sortProducts(filtered, sortBy)
+            setFilteredProducts(sorted)
+        }
+    }, [filterBy, sortBy, allProducts])
 
     if (loading) {
         return (
@@ -147,11 +162,17 @@ const Shop = () => {
                     </div>
 
                     <div className="row">
-                        {filteredProducts.map((data, index) => (
-                            <div className="col-lg-3 col-md-4 col-sm-6 col-12 mb-4" key={index}>
-                                <ProductCard data={data} />
+                        {Array.isArray(filteredProducts) && filteredProducts.length > 0 ? (
+                            filteredProducts.map((data, index) => (
+                                <div className="col-lg-3 col-md-4 col-sm-6 col-12 mb-4" key={data.id || index}>
+                                    <ProductCard data={data} />
+                                </div>
+                            ))
+                        ) : (
+                            <div className="col-12 text-center py-5">
+                                <p>Ürün bulunamadı.</p>
                             </div>
-                        ))}
+                        )}
                     </div>
                 </div>
             </section>
